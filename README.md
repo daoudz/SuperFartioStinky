@@ -5,6 +5,8 @@ An 8-bit retro side-scrolling platformer inspired by the classic arcade era, fea
 
 🎮 **Play Online**: [https://daoudz.github.io/SuperFartioStinky/](https://daoudz.github.io/SuperFartioStinky/)
 
+📱 **Mobile Ready**: Fully optimized for **Android** & **iOS** devices with responsive on-screen virtual controls, haptic vibration feedback, multi-touch support, and full-screen mode!
+
 ---
 
 ## 📖 Story & Lore
@@ -14,16 +16,17 @@ Enter **Fartio**: plumber, chili enthusiast, and master of acoustic propulsion. 
 
 ---
 
-## 🕹️ Controls
+## 🕹️ Controls (Desktop & Mobile)
 
-| Action | Primary Keys | Alternative Keys |
+| Action | Keyboard Keys | Mobile / Touch Gamepad |
 |---|---|---|
-| **Move Left / Right** | `A` / `D` | `◀` / `▶` Arrow Keys |
-| **Fart Jump** | `W` / `Space` | `▲` Up Arrow |
-| **Double Fart Boost** | `W` / `Space` (in mid-air) | `▲` Up Arrow (in mid-air) |
-| **Shoot Toxic Gas / Sprint** | `X` / `Shift` | `J` / `Z` |
-| **Warp to Level** | `1`, `2`, `3`, `4` | Top Level Selector Buttons (`1-1` to `1-4`) |
-| **Advance Next Level** | `Enter` / `N` | (When Level Cleared) |
+| **Move Left / Right** | `A` / `D` or `◀` / `▶` | On-Screen D-Pad `◀` and `▶` |
+| **Fart Jump** | `W` / `Space` / `▲` | `💨 JUMP` Virtual Button |
+| **Double Fart Boost** | `W` / `Space` (in mid-air) | `💨 JUMP` (tap again while airborne) |
+| **Shoot Toxic Gas / Sprint** | `X` / `Shift` / `J` / `Z` | `☣️ GAS` Virtual Button |
+| **Toggle Full Screen** | `⛶ FULLSCREEN` button | Fullscreen API + iOS Safari Edge-to-Edge Mode |
+| **Warp to Level** | `1`, `2`, `3`, `4` | Top Level Selector Buttons (`1-1` to `1-4 👑`) |
+| **Advance Next Level** | `Enter` / `N` | Tap screen or press Enter when level cleared |
 | **Restart Level** | `R` | `🔄 RESTART` button |
 | **Toggle Chiptune Music** | `🎵 BGM` button | Web Audio Synthesizer toggle |
 | **Toggle Scanlines** | `📺 CRT` button | Arcade CRT shader toggle |
@@ -34,7 +37,7 @@ Enter **Fartio**: plumber, chili enthusiast, and master of acoustic propulsion. 
 
 - **Acoustic Fart Jump**: Jumping propels Fartio upward with a burst of synthesized bass flatulence and rising green stink particles. Variable jump control lets you do short hops or hold the key to reach up to **154px** (~4.8 tiles) to easily scale high pipes and bricks.
 - **Mid-Air Double Fart**: Tap jump again while airborne to trigger an emergency secondary toot boost that propels you further across lethal gaps!
-- **Gas Ball Shooting**: Press `X` / `Shift` / `J` to fire bouncing toxic gas spheres that ricochet off floors and walls, flipping enemies on contact.
+- **Gas Ball Shooting**: Press `X` / `Shift` / `J` (or the on-screen `☣️ GAS` button) to fire bouncing toxic gas spheres that ricochet off floors and walls, flipping enemies on contact.
 - **Block Bumping**: Hit `?` blocks and bricks from underneath to reveal items or launch unsuspecting enemies walking on top of them!
 - **Brick Breaking**: Head-bump crusty sewer bricks to crack and smash them into flying debris.
 
@@ -44,9 +47,9 @@ Enter **Fartio**: plumber, chili enthusiast, and master of acoustic propulsion. 
 
 | Item | Name | Effect |
 |:---:|---|---|
-| <img src="https://raw.githubusercontent.com/daoudz/SuperFartioStinky/main/sprites.js" width="32" height="32" alt="Beans" /> | **Baked Beans Can** | Transforms Fartio into **Super Bean Fartio**! Increases size, grants fiery chili overalls, and boosts gas fireball speed and size. |
-| <img src="https://raw.githubusercontent.com/daoudz/SuperFartioStinky/main/sprites.js" width="32" height="32" alt="TP" /> | **Golden Toilet Paper** | Legendary pristine 2-ply roll. Awards **+1500 points** and temporary Golden Wipe invincibility! |
-| <img src="https://raw.githubusercontent.com/daoudz/SuperFartioStinky/main/sprites.js" width="32" height="32" alt="Coin" /> | **Sewer Token Coin** | Golden coin stamped with a plunger. Awards **+200 points**. Collect them from arches and `?` blocks. |
+| 🥫 | **Baked Beans Can** | Transforms Fartio into **Super Bean Fartio**! Increases size, grants fiery chili overalls, and boosts gas fireball speed and size. |
+| 🧻 | **Golden Toilet Paper** | Legendary pristine 2-ply roll. Awards **+1500 points** and temporary Golden Wipe invincibility! |
+| 🪙 | **Sewer Token Coin** | Golden coin stamped with a plunger. Awards **+200 points**. Collect them from arches and `?` blocks. |
 | 🧱 | **Jackpot Multi-Coin Block** | Rapidly head-bump these special blocks up to 5 times for a fountain of coins! |
 
 ---
@@ -82,8 +85,9 @@ The castle climax! Navigate fiery corridors featuring rotating toxic firebars an
 
 ## 🛠️ Technical Architecture
 
+- **Mobile First & Fullscreen**: Responsive touch gamepad designed for Android and iOS touchscreens with multi-touch tracking, haptic vibration pulses, and viewport-fill fullscreen mode.
 - **100% Procedural & Hand-Drawn**: Zero external image or audio files! Every sprite, tile, particle, and animation frame is drawn using custom pixel matrices and offscreen canvas routines in [`sprites.js`](sprites.js).
-- **Procedural Web Audio API Synthesizer**: Sound effects (wet/bassy fart jumps, squeaky gas shots, squishy splats, fanfare, brick smashes) and all 3 chiptune BGM tracks are procedurally synthesized in [`audio.js`](audio.js) via oscillators, noise buffers, and resonant lowpass/bandpass filters.
+- **Procedural Web Audio API Synthesizer**: Sound effects (wet/bassy fart jumps, squeaky gas shots, squishy splats, fanfare, brick smashes) and all 3 chiptune BGM tracks are procedurally synthesized in [`audio.js`](audio.js) via oscillators, noise buffers, and resonant lowpass/bandpass filters. Audio context automatically unlocks on first touch.
 - **Vanilla Modern JavaScript**: No external game engines, build tools, or npm dependencies needed. Runs natively in any modern desktop or mobile browser.
 - **Retro CRT Shader**: Optional retro scanline and vignette overlay toggled with a single click.
 
@@ -96,7 +100,7 @@ Simply clone the repository and open `index.html` in your favorite web browser:
 ```bash
 git clone https://github.com/daoudz/SuperFartioStinky.git
 cd SuperFartioStinky
-start index.html # On Windows (or open in Chrome / Edge / Firefox)
+start index.html # On Windows (or open in Chrome / Edge / Safari / Firefox)
 ```
 
 ---

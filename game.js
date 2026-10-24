@@ -63,6 +63,148 @@ window.addEventListener('keyup', (e) => {
 });
 
 // UI Buttons
+const btnFullscreen = document.getElementById('btn-fullscreen');
+const arcadeWrapper = document.getElementById('arcade-wrapper');
+
+function isFullscreenActive() {
+    return !!(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement ||
+        (arcadeWrapper && arcadeWrapper.classList.contains('is-fullscreen'))
+    );
+}
+
+function updateFullscreenBtn() {
+    if (btnFullscreen) {
+        const active = isFullscreenActive();
+        btnFullscreen.textContent = active ? '⛶ EXIT FULL' : '⛶ FULLSCREEN';
+        btnFullscreen.classList.toggle('active', active);
+    }
+}
+
+if (btnFullscreen) {
+    btnFullscreen.addEventListener('click', () => {
+        window.soundFX.init();
+        if (!isFullscreenActive()) {
+            if (arcadeWrapper && arcadeWrapper.requestFullscreen) {
+                arcadeWrapper.requestFullscreen().catch(() => {
+                    arcadeWrapper.classList.add('is-fullscreen');
+                    updateFullscreenBtn();
+                });
+            } else if (arcadeWrapper && arcadeWrapper.webkitRequestFullscreen) {
+                arcadeWrapper.webkitRequestFullscreen();
+            } else if (arcadeWrapper && arcadeWrapper.msRequestFullscreen) {
+                arcadeWrapper.msRequestFullscreen();
+            } else if (arcadeWrapper) {
+                arcadeWrapper.classList.add('is-fullscreen');
+                window.scrollTo(0, 1);
+                updateFullscreenBtn();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen().catch(() => {});
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+            if (arcadeWrapper) {
+                arcadeWrapper.classList.remove('is-fullscreen');
+            }
+            updateFullscreenBtn();
+        }
+        btnFullscreen.blur();
+    });
+}
+
+document.addEventListener('fullscreenchange', updateFullscreenBtn);
+document.addEventListener('webkitfullscreenchange', updateFullscreenBtn);
+document.addEventListener('mozfullscreenchange', updateFullscreenBtn);
+document.addEventListener('MSFullscreenChange', updateFullscreenBtn);
+
+// ============================================================================
+// MOBILE TOUCH CONTROLS (Android & iOS)
+// Multi-touch, haptic feedback, and audio context unlock
+// ============================================================================
+
+function triggerHaptic(duration = 15) {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try { navigator.vibrate(duration); } catch (_) {}
+    }
+}
+
+function unlockAudioOnFirstTouch() {
+    window.soundFX.init();
+    if (window.soundFX.bgmEnabled && !window.soundFX.bgmPlaying && typeof game !== 'undefined' && game && game.state === 'PLAYING') {
+        window.soundFX.startBGM();
+    }
+}
+
+window.addEventListener('touchstart', unlockAudioOnFirstTouch, { once: true, passive: true });
+window.addEventListener('pointerdown', unlockAudioOnFirstTouch, { once: true, passive: true });
+
+function setupTouchButton(elementId, onPress, onRelease) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    const handlePress = (e) => {
+        if (e.cancelable) e.preventDefault();
+        e.stopPropagation();
+        unlockAudioOnFirstTouch();
+        triggerHaptic(12);
+        el.classList.add('pressed');
+        onPress();
+    };
+
+    const handleRelease = (e) => {
+        if (e.cancelable) e.preventDefault();
+        e.stopPropagation();
+        el.classList.remove('pressed');
+        onRelease();
+    };
+
+    el.addEventListener('touchstart', handlePress, { passive: false });
+    el.addEventListener('touchend', handleRelease, { passive: false });
+    el.addEventListener('touchcancel', handleRelease, { passive: false });
+
+    // Pointer/Mouse support for testing
+    el.addEventListener('mousedown', handlePress);
+    el.addEventListener('mouseup', handleRelease);
+    el.addEventListener('mouseleave', handleRelease);
+}
+
+setupTouchButton(
+    'touch-left',
+    () => { keys.left = true; },
+    () => { keys.left = false; }
+);
+
+setupTouchButton(
+    'touch-right',
+    () => { keys.right = true; },
+    () => { keys.right = false; }
+);
+
+setupTouchButton(
+    'touch-jump',
+    () => {
+        if (!keys.jump) keys.jumpPressed = true;
+        keys.jump = true;
+    },
+    () => { keys.jump = false; }
+);
+
+setupTouchButton(
+    'touch-shoot',
+    () => {
+        if (!keys.shoot) keys.shootPressed = true;
+        keys.shoot = true;
+    },
+    () => { keys.shoot = false; }
+);
+
 document.getElementById('btn-music').addEventListener('click', (e) => {
     const enabled = window.soundFX.toggleBGM();
     e.target.textContent = enabled ? '🎵 BGM: ON' : '🔇 BGM: OFF';

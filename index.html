@@ -2,12 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0b130e">
     <title>SUPER FARTIO BROS. - World 1: The Sewer Kingdom</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="arcade-wrapper">
+    <div id="arcade-wrapper" class="arcade-wrapper">
         <header class="game-header">
             <div class="title-badge">
                 <span class="stink-icon">💨</span>
@@ -21,6 +25,7 @@
                 <button class="retro-btn lvl-btn" data-level="4" title="World 1-4: King Poopa's Citadel">1-4 👑</button>
             </div>
             <div class="top-controls">
+                <button id="btn-fullscreen" class="retro-btn" title="Toggle Full Screen Mode">⛶ FULLSCREEN</button>
                 <button id="btn-music" class="retro-btn" title="Toggle Sewer Chiptune Music">🎵 BGM: ON</button>
                 <button id="btn-crt" class="retro-btn active" title="Toggle CRT Scanlines">📺 CRT: ON</button>
                 <button id="btn-restart" class="retro-btn" title="Restart Level (R)">🔄 RESTART</button>
@@ -29,6 +34,29 @@
 
         <div id="canvas-container" class="crt-effect">
             <canvas id="gameCanvas" width="800" height="480"></canvas>
+
+            <!-- On-Screen Virtual Touch Gamepad for Mobile (Android & iOS) -->
+            <div id="touch-controls" class="touch-controls-layer" aria-label="Touch Controls">
+                <div class="touch-group touch-dpad">
+                    <button id="touch-left" class="touch-btn dpad-btn" aria-label="Move Left">
+                        <span class="btn-icon">◀</span>
+                    </button>
+                    <button id="touch-right" class="touch-btn dpad-btn" aria-label="Move Right">
+                        <span class="btn-icon">▶</span>
+                    </button>
+                </div>
+
+                <div class="touch-group touch-actions">
+                    <button id="touch-shoot" class="touch-btn action-btn shoot-btn" aria-label="Shoot Gas / Sprint">
+                        <span class="btn-icon">☣️</span>
+                        <span class="btn-sub">GAS</span>
+                    </button>
+                    <button id="touch-jump" class="touch-btn action-btn jump-btn" aria-label="Fart Jump">
+                        <span class="btn-icon">💨</span>
+                        <span class="btn-sub">JUMP</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <footer class="controls-panel">

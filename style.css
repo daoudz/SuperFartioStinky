@@ -15,37 +15,47 @@
     margin: 0;
     padding: 0;
     user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background-color: var(--sewer-dark);
 }
 
 body {
-    background-color: var(--sewer-dark);
     background-image: 
         radial-gradient(circle at 50% 30%, #193022 0%, #070d09 85%),
         repeating-linear-gradient(0deg, rgba(0,0,0,0.2) 0px, rgba(0,0,0,0.2) 2px, transparent 2px, transparent 4px);
     color: var(--text-light);
     font-family: 'Press Start 2P', 'Courier New', monospace;
     min-height: 100vh;
+    min-height: -webkit-fill-available;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 16px;
-    overflow: hidden;
+    padding: 12px;
 }
 
 .arcade-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     max-width: 980px;
     width: 100%;
     background: #142219;
     border: 4px solid #3c5c45;
     border-radius: 12px;
-    padding: 16px;
+    padding: 14px;
     box-shadow: 
         0 0 35px rgba(114, 224, 27, 0.2),
         inset 0 0 20px rgba(0, 0, 0, 0.8);
+    position: relative;
+    transition: all 0.2s ease;
 }
 
 .game-header {
@@ -54,18 +64,18 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
-    padding: 4px 8px;
+    gap: 8px;
+    padding: 2px 6px;
 }
 
 .title-badge {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .title-badge h1 {
-    font-size: 18px;
+    font-size: 17px;
     color: var(--slime-green);
     text-shadow: 
         3px 3px 0px #3a200c,
@@ -75,7 +85,7 @@ body {
 }
 
 .stink-icon {
-    font-size: 20px;
+    font-size: 18px;
     filter: drop-shadow(2px 2px 0 #000);
 }
 
@@ -84,6 +94,7 @@ body {
     display: flex;
     gap: 6px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .retro-btn {
@@ -96,6 +107,7 @@ body {
     cursor: pointer;
     box-shadow: 0 4px 0 #0d1710;
     transition: transform 0.08s, background 0.15s;
+    touch-action: manipulation;
 }
 
 .lvl-btn {
@@ -131,6 +143,7 @@ body {
     box-shadow: 
         0 8px 24px rgba(0, 0, 0, 0.85),
         inset 0 0 15px rgba(0, 0, 0, 0.9);
+    touch-action: none;
 }
 
 #gameCanvas {
@@ -141,6 +154,7 @@ body {
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
+    touch-action: none;
 }
 
 #canvas-container.crt-effect::after {
@@ -155,12 +169,121 @@ body {
     z-index: 5;
 }
 
+/* ============================================================================
+   ON-SCREEN VIRTUAL TOUCH GAMEPAD (Android & iOS)
+   ============================================================================ */
+.touch-controls-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 16px 18px;
+    z-index: 10;
+}
+
+.touch-group {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    pointer-events: auto;
+}
+
+.touch-btn {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #2a4c35, #14281b 80%);
+    border: 3px solid #578a63;
+    color: #e2f5d8;
+    box-shadow: 0 5px 0 #09130d, 0 0 14px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.06s, box-shadow 0.06s, border-color 0.1s, background 0.1s;
+    user-select: none;
+    -webkit-user-select: none;
+    opacity: 0.88;
+}
+
+.touch-btn .btn-icon {
+    font-size: 20px;
+    line-height: 1;
+    filter: drop-shadow(1px 1px 0 #000);
+}
+
+.touch-btn .btn-sub {
+    font-size: 8px;
+    font-family: inherit;
+    margin-top: 3px;
+    color: var(--slime-green);
+    letter-spacing: 0.5px;
+}
+
+.touch-btn:active,
+.touch-btn.pressed {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #09130d, 0 0 18px rgba(114, 224, 27, 0.6);
+    border-color: var(--slime-green);
+    background: radial-gradient(circle at 35% 35%, #3d6e4d, #1c3b28 80%);
+    opacity: 1;
+}
+
+.dpad-btn {
+    width: 62px;
+    height: 62px;
+    border-radius: 14px;
+    background: radial-gradient(circle at 35% 35%, #284430, #132419 80%);
+}
+
+.action-btn {
+    width: 68px;
+    height: 68px;
+}
+
+.shoot-btn {
+    background: radial-gradient(circle at 35% 35%, #5a3818, #2a180a 80%);
+    border-color: #8c5828;
+}
+
+.shoot-btn .btn-sub {
+    color: #ffaa00;
+}
+
+.shoot-btn:active,
+.shoot-btn.pressed {
+    border-color: #ffaa00;
+    box-shadow: 0 1px 0 #09130d, 0 0 18px rgba(255, 170, 0, 0.6);
+    background: radial-gradient(circle at 35% 35%, #754c22, #3b220e 80%);
+}
+
+.jump-btn {
+    background: radial-gradient(circle at 35% 35%, #305820, #17300e 80%);
+    border-color: #5ea834;
+}
+
+.jump-btn .btn-sub {
+    color: var(--toxic-glow);
+}
+
+.jump-btn:active,
+.jump-btn.pressed {
+    border-color: var(--toxic-glow);
+    box-shadow: 0 1px 0 #09130d, 0 0 20px rgba(166, 255, 0, 0.7);
+    background: radial-gradient(circle at 35% 35%, #467e2e, #224215 80%);
+}
+
 .controls-panel {
     width: 100%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 18px;
+    gap: 16px;
     padding: 8px 12px;
     background: #0d1711;
     border: 2px solid #284230;
@@ -186,4 +309,149 @@ body {
 
 .control-label {
     color: #9ec4a8;
+}
+
+/* ============================================================================
+   FULLSCREEN MODE STYLING (Desktop, Android & iOS Fallback)
+   ============================================================================ */
+:fullscreen,
+::backdrop {
+    background-color: #070d09;
+}
+
+.arcade-wrapper:fullscreen,
+.arcade-wrapper:-webkit-full-screen,
+.arcade-wrapper.is-fullscreen {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100vh !important;
+    height: -webkit-fill-available !important;
+    max-height: 100vh !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: env(safe-area-inset-top, 6px) env(safe-area-inset-right, 8px) env(safe-area-inset-bottom, 6px) env(safe-area-inset-left, 8px) !important;
+    margin: 0 !important;
+    justify-content: space-between;
+    background: #070d09;
+}
+
+.arcade-wrapper.is-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+}
+
+.arcade-wrapper:fullscreen #canvas-container,
+.arcade-wrapper:-webkit-full-screen #canvas-container,
+.arcade-wrapper.is-fullscreen #canvas-container {
+    max-width: 100%;
+    max-height: calc(100vh - 58px);
+    border: 2px solid #2b4432;
+    border-radius: 4px;
+    flex-grow: 1;
+}
+
+.arcade-wrapper:fullscreen .controls-panel,
+.arcade-wrapper:-webkit-full-screen .controls-panel,
+.arcade-wrapper.is-fullscreen .controls-panel {
+    display: none;
+}
+
+.arcade-wrapper:fullscreen .game-header,
+.arcade-wrapper:-webkit-full-screen .game-header,
+.arcade-wrapper.is-fullscreen .game-header {
+    padding: 2px 8px;
+}
+
+/* ============================================================================
+   RESPONSIVE LAYOUT FOR MOBILE DEVICES (Android & iOS)
+   ============================================================================ */
+@media (max-width: 768px) {
+    body {
+        padding: 4px;
+    }
+
+    .arcade-wrapper {
+        padding: 8px;
+        gap: 8px;
+        border-width: 2px;
+    }
+
+    .title-badge h1 {
+        font-size: 13px;
+    }
+
+    .retro-btn {
+        padding: 6px 7px;
+        font-size: 8px;
+    }
+
+    .lvl-btn {
+        padding: 5px 6px;
+        font-size: 8px;
+    }
+
+    .touch-btn {
+        width: 58px;
+        height: 58px;
+        opacity: 0.92;
+    }
+
+    .touch-btn .btn-icon {
+        font-size: 18px;
+    }
+
+    .touch-btn .btn-sub {
+        font-size: 7px;
+    }
+
+    .controls-panel {
+        display: none; /* Hide keyboard legend on small touch screens */
+    }
+}
+
+/* Mobile Landscape Optimizations (Ideal side-scroller experience!) */
+@media (orientation: landscape) and (max-height: 540px) {
+    body {
+        padding: 0;
+    }
+
+    .arcade-wrapper {
+        border: none;
+        border-radius: 0;
+        padding: 2px 8px;
+        gap: 4px;
+        height: 100vh;
+        max-height: 100vh;
+        justify-content: flex-start;
+    }
+
+    .game-header {
+        padding: 1px 4px;
+    }
+
+    .title-badge {
+        display: none; /* Give maximum room to the canvas */
+    }
+
+    #canvas-container {
+        max-height: calc(100vh - 40px);
+        border-width: 2px;
+    }
+
+    .touch-controls-layer {
+        padding: 8px 12px;
+    }
+
+    .touch-btn {
+        width: 54px;
+        height: 54px;
+    }
+
+    .controls-panel {
+        display: none;
+    }
 }
