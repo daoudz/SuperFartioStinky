@@ -124,6 +124,28 @@ document.addEventListener('webkitfullscreenchange', updateFullscreenBtn);
 document.addEventListener('mozfullscreenchange', updateFullscreenBtn);
 document.addEventListener('MSFullscreenChange', updateFullscreenBtn);
 
+// Orientation prompt dismiss button & orientation change handler
+const btnDismissRotate = document.getElementById('btn-dismiss-rotate');
+if (btnDismissRotate) {
+    btnDismissRotate.addEventListener('click', () => {
+        document.body.classList.add('portrait-dismissed');
+        window.soundFX.init();
+    });
+}
+
+function handleOrientationChange() {
+    const isLandscape = (typeof window !== 'undefined') && (
+        (window.matchMedia && window.matchMedia('(orientation: landscape)').matches) ||
+        (window.innerWidth > window.innerHeight)
+    );
+    if (isLandscape && typeof document !== 'undefined') {
+        document.body.classList.remove('portrait-dismissed');
+    }
+}
+
+window.addEventListener('resize', handleOrientationChange);
+window.addEventListener('orientationchange', handleOrientationChange);
+
 // ============================================================================
 // MOBILE TOUCH CONTROLS (Android & iOS)
 // Multi-touch, haptic feedback, and audio context unlock

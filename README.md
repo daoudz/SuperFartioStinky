@@ -5,7 +5,7 @@ An 8-bit retro side-scrolling platformer inspired by the classic arcade era, fea
 
 🎮 **Play Online**: [https://daoudz.github.io/SuperFartioStinky/](https://daoudz.github.io/SuperFartioStinky/)
 
-📱 **Mobile Ready**: Fully optimized for **Android** & **iOS** devices with responsive on-screen virtual controls, haptic vibration feedback, multi-touch support, and full-screen mode!
+📱 **Mobile Ready**: Fully optimized for **Android** & **iOS** devices with responsive on-screen virtual controls, automatic landscape orientation prompt, haptic vibration feedback, multi-touch support, and full-screen mode!
 
 ---
 

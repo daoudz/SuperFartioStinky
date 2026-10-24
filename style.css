@@ -455,3 +455,157 @@ body {
         display: none;
     }
 }
+
+
+/* ============================================================================
+   ROTATE DEVICE PROMPT OVERLAY (Mobile Portrait Mode)
+   ============================================================================ */
+.rotate-prompt-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: -webkit-fill-available;
+    background: rgba(7, 13, 9, 0.96);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 999999;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+/* Activate on mobile / small devices in portrait orientation */
+@media screen and (orientation: portrait) and (max-width: 900px) {
+    body:not(.portrait-dismissed) .rotate-prompt-overlay {
+        display: flex;
+    }
+}
+
+.rotate-card {
+    background: #142219;
+    border: 4px solid var(--slime-green);
+    border-radius: 12px;
+    padding: 24px 20px;
+    max-width: 360px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    box-shadow: 
+        0 0 35px rgba(114, 224, 27, 0.35),
+        inset 0 0 20px rgba(0, 0, 0, 0.8);
+    animation: pulseBorder 2s infinite ease-in-out;
+}
+
+@keyframes pulseBorder {
+    0%, 100% { border-color: var(--slime-green); box-shadow: 0 0 25px rgba(114, 224, 27, 0.3); }
+    50% { border-color: var(--toxic-glow); box-shadow: 0 0 40px rgba(166, 255, 0, 0.55); }
+}
+
+.rotate-animation {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.phone-device {
+    width: 48px;
+    height: 84px;
+    background: #0d1711;
+    border: 3px solid #6ab04c;
+    border-radius: 9px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 16px rgba(114, 224, 27, 0.5);
+    animation: rotatePhone 2.6s infinite ease-in-out;
+}
+
+@keyframes rotatePhone {
+    0%, 20% {
+        transform: rotate(0deg);
+    }
+    45%, 75% {
+        transform: rotate(-90deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.phone-screen-inner {
+    width: 36px;
+    height: 66px;
+    background: #193022;
+    border: 1px solid #3c5c45;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rotate-stink-icon {
+    font-size: 20px;
+    filter: drop-shadow(0 0 6px var(--slime-green));
+}
+
+.rotate-arrow-badge {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    font-size: 24px;
+    color: var(--gold-coin);
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+    animation: spinArrow 2.6s infinite linear;
+}
+
+@keyframes spinArrow {
+    0%, 20% { opacity: 0.3; transform: rotate(0deg); }
+    45%, 75% { opacity: 1; transform: rotate(-180deg); }
+    100% { opacity: 0.3; transform: rotate(-360deg); }
+}
+
+.rotate-card h2 {
+    font-size: 14px;
+    color: var(--slime-green);
+    text-shadow: 2px 2px 0 #000;
+    line-height: 1.4;
+}
+
+.rotate-main-text {
+    font-size: 9px;
+    line-height: 1.6;
+    color: var(--text-light);
+}
+
+.rotate-main-text strong {
+    color: var(--toxic-glow);
+}
+
+.rotate-sub {
+    font-size: 8px;
+    color: #9ec4a8;
+    line-height: 1.5;
+}
+
+.dismiss-btn {
+    font-size: 8px;
+    padding: 7px 10px;
+    color: #9ec4a8;
+    border-color: #3b5a43;
+    background: #172a1e;
+    margin-top: 4px;
+}
+
+.dismiss-btn:hover {
+    color: var(--gold-coin);
+    border-color: var(--gold-coin);
+}

@@ -11,6 +11,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Orientation Prompt for Mobile Portrait Mode -->
+    <div id="rotate-prompt" class="rotate-prompt-overlay" aria-live="polite">
+        <div class="rotate-card">
+            <div class="rotate-animation">
+                <div class="phone-device">
+                    <div class="phone-screen-inner">
+                        <span class="rotate-stink-icon">💨</span>
+                    </div>
+                </div>
+                <div class="rotate-arrow-badge">⟳</div>
+            </div>
+            <h2>PLEASE ROTATE DEVICE</h2>
+            <p class="rotate-main-text">SUPER FARTIO BROS. is an arcade side-scroller designed for <strong>LANDSCAPE</strong> mode.</p>
+            <p class="rotate-sub">Turn your phone sideways for the optimal sewer experience!</p>
+            <button id="btn-dismiss-rotate" class="retro-btn dismiss-btn" title="Continue in portrait">Play in Portrait Anyway ➔</button>
+        </div>
+    </div>
+
     <div id="arcade-wrapper" class="arcade-wrapper">
         <header class="game-header">
             <div class="title-badge">
