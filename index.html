@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0b130e">
-    <title>SUPER FARTIO BROS. - World 1: The Sewer Kingdom</title>
+    <title>SUPER FARTIO BROS. - World 1 &amp; World 2: The Rotten Landfill</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -40,11 +40,16 @@
                 <button class="retro-btn lvl-btn active" data-level="1" title="World 1-1: The Great Sewer">1-1</button>
                 <button class="retro-btn lvl-btn" data-level="2" title="World 1-2: Toxic Pipeworks">1-2</button>
                 <button class="retro-btn lvl-btn" data-level="3" title="World 1-3: Septic Lagoon">1-3</button>
-                <button class="retro-btn lvl-btn" data-level="4" title="World 1-4: King Poopa's Citadel">1-4 👑</button>
+                <button class="retro-btn lvl-btn" data-level="4" title="World 1-4: King Poopa's Citadel">1-4👑</button>
+                <span class="world-sep" aria-hidden="true">|</span>
+                <button class="retro-btn lvl-btn lvl-w2" data-level="5" title="World 2-1: Mount Garbagio">2-1</button>
+                <button class="retro-btn lvl-btn lvl-w2" data-level="6" title="World 2-2: Compactor Factory">2-2</button>
+                <button class="retro-btn lvl-btn lvl-w2" data-level="7" title="World 2-3: Moldy Cheese Marsh">2-3</button>
+                <button class="retro-btn lvl-btn lvl-w2" data-level="8" title="World 2-4: Garbagio's Incinerator">2-4💀</button>
             </div>
             <div class="top-controls">
                 <button id="btn-fullscreen" class="retro-btn" title="Toggle Full Screen Mode">⛶ FULLSCREEN</button>
-                <button id="btn-music" class="retro-btn" title="Toggle Sewer Chiptune Music">🎵 BGM: ON</button>
+                <button id="btn-music" class="retro-btn" title="Toggle Chiptune Music">🎵 BGM: ON</button>
                 <button id="btn-crt" class="retro-btn active" title="Toggle CRT Scanlines">📺 CRT: ON</button>
                 <button id="btn-restart" class="retro-btn" title="Restart Level (R)">🔄 RESTART</button>
             </div>
@@ -94,7 +99,7 @@
                 <span class="control-label">Shoot Gas / Sprint</span>
             </div>
             <div class="control-group">
-                <span class="key-badge">1 - 4</span>
+                <span class="key-badge">1 - 8</span>
                 <span class="control-label">Warp Level</span>
             </div>
             <div class="control-group">
@@ -107,6 +112,17 @@
         <div id="start-screen" class="start-overlay" role="dialog" aria-modal="true" aria-labelledby="start-title">
             <div class="start-card">
                 <h2 id="start-title" class="start-title">💨 SUPER FARTIO BROS. 💩</h2>
+                <div class="start-world-bar" aria-label="Choose World and Stage">
+                    <button class="retro-btn lvl-btn start-lvl-pill active" data-level="1">1-1</button>
+                    <button class="retro-btn lvl-btn start-lvl-pill" data-level="2">1-2</button>
+                    <button class="retro-btn lvl-btn start-lvl-pill" data-level="3">1-3</button>
+                    <button class="retro-btn lvl-btn start-lvl-pill" data-level="4">1-4👑</button>
+                    <span class="world-sep" aria-hidden="true">|</span>
+                    <button class="retro-btn lvl-btn lvl-w2 start-lvl-pill" data-level="5">2-1</button>
+                    <button class="retro-btn lvl-btn lvl-w2 start-lvl-pill" data-level="6">2-2</button>
+                    <button class="retro-btn lvl-btn lvl-w2 start-lvl-pill" data-level="7">2-3</button>
+                    <button class="retro-btn lvl-btn lvl-w2 start-lvl-pill" data-level="8">2-4💀</button>
+                </div>
                 <div class="start-level">
                     <span id="start-level-code" class="start-level-code">WORLD 1-1</span>
                     <span id="start-level-name" class="start-level-name">THE GREAT SEWER</span>
@@ -120,7 +136,7 @@
                     <li><span class="tip-key">◀ ▶</span> Move</li>
                     <li><span class="tip-key">💨</span> Fart Jump</li>
                     <li><span class="tip-key">☣️</span> Gas / Sprint</li>
-                    <li><span class="tip-key">🥫</span> Beans = Super Gas</li>
+                    <li id="start-tip-power"><span class="tip-key">🥫</span> Beans = Super Gas</li>
                 </ul>
                 <div class="start-actions">
                     <button id="btn-start-fullscreen" class="retro-btn start-btn start-btn-primary">⛶ PLAY FULLSCREEN</button>

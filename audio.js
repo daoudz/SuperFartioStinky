@@ -387,7 +387,116 @@ class SoundEngine {
         noise.stop(now + duration);
     }
 
-    // 8-Bit Underground Sewer & Castle Groove BGM
+    // Whoopee Cushion Bounce Pad Mega-Rip Boost!
+    playBouncePad() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const duration = 0.44;
+
+        const osc = this.ctx.createOscillator();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(62, now);
+        osc.frequency.exponentialRampToValueAtTime(255, now + 0.16);
+        osc.frequency.exponentialRampToValueAtTime(52, now + duration);
+
+        const lfo = this.ctx.createOscillator();
+        lfo.type = 'square';
+        lfo.frequency.setValueAtTime(42, now);
+        const lfoGain = this.ctx.createGain();
+        lfoGain.gain.setValueAtTime(34, now);
+        lfo.connect(lfoGain);
+        lfoGain.connect(osc.frequency);
+
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = this.createNoiseBuffer(duration);
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.Q.setValueAtTime(4.2, now);
+        filter.frequency.setValueAtTime(240, now);
+        filter.frequency.exponentialRampToValueAtTime(920, now + 0.18);
+        filter.frequency.exponentialRampToValueAtTime(160, now + duration);
+
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0.36, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + duration);
+
+        osc.connect(filter);
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        lfo.start(now);
+        noise.start(now);
+        osc.stop(now + duration);
+        lfo.stop(now + duration);
+        noise.stop(now + duration);
+    }
+
+    // Metallic Garbage-Can Lid Clang (Trashjaw armor dent!)
+    playArmorClang() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const freqs = [880, 1318.5, 1760];
+        freqs.forEach((f, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = i === 0 ? 'square' : 'triangle';
+            osc.frequency.setValueAtTime(f, now);
+            osc.frequency.exponentialRampToValueAtTime(f * 0.72, now + 0.16);
+            gain.gain.setValueAtTime(0.16 / (i + 1), now);
+            gain.gain.exponentialRampToValueAtTime(0.008, now + 0.16);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.16);
+        });
+    }
+
+    // Fermented Garlic Burrito Turbo Power-Up Fanfare!
+    playGarlicPowerup() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const notes = [
+            392, 466.16, 587.33, 783.99, 587.33, 698.46, 880, 1046.5,
+            783.99, 932.33, 1174.66, 1567.98
+        ];
+        notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = idx % 2 === 0 ? 'sawtooth' : 'square';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.04);
+            gain.gain.setValueAtTime(0.15, now + idx * 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.008, now + (idx + 1) * 0.042);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + idx * 0.04);
+            osc.stop(now + (idx + 1) * 0.042);
+        });
+        setTimeout(() => this.playFartJump(true), 420);
+    }
+
+    // Golden Stink Star Medal Chime!
+    playStarCollect() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const notes = [659.25, 830.61, 987.77, 1318.51, 1661.22];
+        notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.055);
+            gain.gain.setValueAtTime(0.18, now + idx * 0.055);
+            gain.gain.exponentialRampToValueAtTime(0.008, now + idx * 0.055 + 0.22);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + idx * 0.055);
+            osc.stop(now + idx * 0.055 + 0.22);
+        });
+    }
+
+    // 8-Bit Underground Sewer, Landfill & Boss Groove BGM
     startBGM() {
         if (!this.bgmEnabled || this.bgmPlaying) return;
         this.init();
@@ -438,28 +547,91 @@ class SoundEngine {
             440.00, 523.25, 587.33, 622.25, 587.33, 523.25, 466.16, 440.00
         ];
 
-        const stepDurationMs = 150;
+        // World 2-1 & 2-2: Funky Junkyard Slap-Tuba Groove (G Dorian / Bluesy Stink)
+        const landfillBass = [
+            98.00,  0, 196.00, 116.54, 130.81, 0, 146.83, 196.00,
+            98.00,  0, 196.00, 174.61, 146.83, 130.81, 116.54, 110.00,
+            116.54, 0, 233.08, 146.83, 174.61, 0, 164.81, 146.83,
+            130.81, 138.59, 146.83, 0, 98.00,  116.54, 130.81, 146.83
+        ];
+
+        const landfillLead = [
+            392.00, 0, 466.16, 523.25, 587.33, 0, 523.25, 466.16,
+            392.00, 466.16, 554.37, 587.33, 0, 523.25, 466.16, 392.00,
+            466.16, 0, 587.33, 659.25, 698.46, 659.25, 587.33, 523.25,
+            554.37, 523.25, 466.16, 392.00, 440.00, 0, 392.00, 0
+        ];
+
+        // World 2-3: Moldy Cheese Marsh Squelchy Bounce
+        const marshBass = [
+            110.00, 220.00, 0, 164.81, 110.00, 220.00, 155.56, 146.83,
+            130.81, 261.63, 0, 196.00, 130.81, 246.94, 220.00, 196.00,
+            116.54, 233.08, 0, 174.61, 116.54, 233.08, 196.00, 174.61,
+            123.47, 185.00, 246.94, 0, 164.81, 146.83, 130.81, 123.47
+        ];
+
+        const marshLead = [
+            440.00, 523.25, 659.25, 0, 622.25, 587.33, 523.25, 440.00,
+            523.25, 659.25, 783.99, 0, 739.99, 659.25, 587.33, 523.25,
+            466.16, 587.33, 698.46, 0, 659.25, 587.33, 523.25, 466.16,
+            493.88, 0, 659.25, 587.33, 523.25, 493.88, 440.00, 0
+        ];
+
+        // World 2-4: Garbagio's Incinerator Heavy Furnace Riff
+        const incineratorBass = [
+            82.41,  82.41,  164.81, 87.31,  82.41,  98.00,  92.50,  87.31,
+            82.41,  82.41,  164.81, 110.00, 103.83, 98.00,  87.31,  82.41,
+            98.00,  98.00,  196.00, 103.83, 98.00,  116.54, 110.00, 103.83,
+            123.47, 116.54, 110.00, 103.83, 98.00,  92.50,  87.31,  82.41
+        ];
+
+        const incineratorLead = [
+            329.63, 0, 493.88, 466.16, 329.63, 392.00, 369.99, 349.23,
+            329.63, 0, 659.25, 587.33, 554.37, 493.88, 466.16, 392.00,
+            392.00, 0, 587.33, 554.37, 392.00, 466.16, 440.00, 415.30,
+            493.88, 587.33, 659.25, 698.46, 659.25, 587.33, 493.88, 466.16
+        ];
+
+        const stepDurationMs = 142;
         this.bgmTimer = setInterval(() => {
             if (!this.bgmEnabled || !this.bgmPlaying || !this.ctx || this.ctx.state !== 'running') return;
             const now = this.ctx.currentTime;
             const lvl = (window.game && window.game.currentLevel) || 1;
-            const bassSequence = lvl === 4 ? castleBass : (lvl === 3 ? lagoonBass : sewerBass);
-            const leadSequence = lvl === 4 ? castleLead : (lvl === 3 ? lagoonLead : sewerLead);
+            let bassSequence = sewerBass;
+            let leadSequence = sewerLead;
+            if (lvl === 3) {
+                bassSequence = lagoonBass;
+                leadSequence = lagoonLead;
+            } else if (lvl === 4) {
+                bassSequence = castleBass;
+                leadSequence = castleLead;
+            } else if (lvl === 5 || lvl === 6) {
+                bassSequence = landfillBass;
+                leadSequence = landfillLead;
+            } else if (lvl === 7) {
+                bassSequence = marshBass;
+                leadSequence = marshLead;
+            } else if (lvl === 8) {
+                bassSequence = incineratorBass;
+                leadSequence = incineratorLead;
+            }
+
             const idx = this.stepIndex % bassSequence.length;
+            const isBossLvl = (lvl === 4 || lvl === 8);
+            const isWorld2 = (lvl >= 5);
 
             const bassFreq = bassSequence[idx];
             if (bassFreq > 0) {
                 const bassOsc = this.ctx.createOscillator();
                 const bassGain = this.ctx.createGain();
-                // Alternate between triangle & tuba-fart sawtooth on downbeats
-                bassOsc.type = (idx % 4 === 0 || lvl === 4) ? 'sawtooth' : 'triangle';
+                bassOsc.type = (idx % 4 === 0 || isBossLvl || isWorld2) ? 'sawtooth' : 'triangle';
                 bassOsc.frequency.setValueAtTime(bassFreq, now);
                 bassGain.gain.setValueAtTime(0.08, now);
                 bassGain.gain.exponentialRampToValueAtTime(0.005, now + 0.13);
 
                 const filter = this.ctx.createBiquadFilter();
                 filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(lvl === 4 ? 520 : 420, now);
+                filter.frequency.setValueAtTime(isBossLvl ? 560 : (isWorld2 ? 490 : 420), now);
 
                 bassOsc.connect(filter);
                 filter.connect(bassGain);
@@ -472,7 +644,7 @@ class SoundEngine {
             if (leadFreq > 0) {
                 const leadOsc = this.ctx.createOscillator();
                 const leadGain = this.ctx.createGain();
-                leadOsc.type = 'square';
+                leadOsc.type = (lvl === 8 && idx % 2 === 0) ? 'sawtooth' : 'square';
                 leadOsc.frequency.setValueAtTime(leadFreq, now);
                 leadGain.gain.setValueAtTime(0.045, now);
                 leadGain.gain.exponentialRampToValueAtTime(0.004, now + 0.12);

@@ -156,6 +156,27 @@ class SpriteBank {
         this.cache.super_walk2 = this.createPixelSprite(fartioWalk2Grid, fartioSuperPal, 2);
         this.cache.super_jump = this.createPixelSprite(fartioJumpGrid, fartioSuperPal, 2);
 
+        // World 2 Fermented Garlic Burrito Turbo Palette!
+        const fartioGarlicPal = {
+            'O': '#140c1f',
+            'H': '#a824ff', // Electric violet-magenta cap & shirt
+            'h': '#e58cff', // Bright neon purple highlight
+            'W': '#ffffff',
+            'S': '#f7be8f',
+            's': '#d98f5c',
+            'M': '#3d1e05',
+            'B': '#e6b800', // Golden roasted-garlic overalls
+            'b': '#997300',
+            'Y': '#33ffcc', // Cyan bio-turbo buttons
+            'K': '#261433',
+            'G': '#33ffcc'  // Hyper-garlic cyan-lime jet accent
+        };
+
+        this.cache.garlic_idle = this.createPixelSprite(fartioIdleGrid, fartioGarlicPal, 2);
+        this.cache.garlic_walk1 = this.createPixelSprite(fartioWalk1Grid, fartioGarlicPal, 2);
+        this.cache.garlic_walk2 = this.createPixelSprite(fartioWalk2Grid, fartioGarlicPal, 2);
+        this.cache.garlic_jump = this.createPixelSprite(fartioJumpGrid, fartioGarlicPal, 2);
+
         // --------------------------------------------------------------------
         // 2. POOP ENEMY ("TURDION" - Swirled Poop Goomba with Corn & Angry Eyes)
         // --------------------------------------------------------------------
@@ -565,7 +586,396 @@ class SpriteBank {
         this.cache.boss_2 = this.createPixelSprite(bossFrame2, bossPalette, 2);
 
         // --------------------------------------------------------------------
-        // 5. TILES: SEWER GROUND, CRUSTY BRICKS, ? BLOCKS, EMPTY BLOCK
+        // 4D. WORLD 2 BOOST & GOAL COLLECTIBLES: GARLIC BURRITO & STINK STAR
+        // --------------------------------------------------------------------
+        const burritoPalette = {
+            'O': '#1a0d26', // Dark outline
+            'P': '#b833ff', // Neon garlic vapor wisp
+            'C': '#33ffcc', // Cyan bio-stink spark
+            'F': '#c9d6df', // Foil wrapper silver
+            'W': '#ffffff', // Garlic clove white / foil shine
+            'T': '#e6ac4c', // Toasted tortilla gold
+            't': '#a8721e', // Tortilla grill mark
+            'G': '#8cff1a', // Spicy guac / herb filling
+            'R': '#ff3322'  // Ghost chili salsa spec
+        };
+
+        const burritoGrid = [
+            "..P....C.....P..",
+            ".P..C..OOOO...C.",
+            "......OTTTTO....",
+            ".....OTWWGRTO...",
+            "....OTWWGGWRTO..",
+            "...OTtTTTTTTtTO.",
+            "...OFFFFFFFFWFO.",
+            "..OFFWWWWWWWWFO.",
+            "..OFFFPPPPFFFFO.",
+            ".OOFFWPPPPWFFO..",
+            ".OFFFWWWWWWFO...",
+            ".OFFFFFFFFFO....",
+            "..OFFFFFFFO.....",
+            "...OOOOOOO......",
+            "................",
+            "................"
+        ];
+        this.cache.garlic_burrito = this.createPixelSprite(burritoGrid, burritoPalette, 2);
+
+        const starPalette = {
+            'O': '#291a00',
+            'G': '#e69900',
+            'Y': '#ffe629',
+            'W': '#ffffff',
+            'S': '#8cff1a' // Stink emblem center
+        };
+
+        const starFrame1 = [
+            ".......OO.......",
+            "......OYYO......",
+            "......OYYO......",
+            ".....OYYYYO.....",
+            "OOOOOOYYYYOOOOOO",
+            "OYYYYWWYYWWYYYYO",
+            ".OYYYYWSSWYYYYO.",
+            "..OYYYWSSWYYYO..",
+            "...OYYYYYYYYO...",
+            "..OYYYYYYYYYYO..",
+            "..OYYYYOOYYYYO..",
+            ".OYYYO....OYYYO.",
+            ".OGGO......OGGO.",
+            "..OO........OO..",
+            "................",
+            "................"
+        ];
+
+        const starFrame2 = [
+            ".......OO.......",
+            "......OWWO......",
+            "......OYYO......",
+            ".....OYWWYO.....",
+            "OOOOOOYYYYOOOOOO",
+            "OYYYYYYYYYYYYYYO",
+            ".OGGYYYSSYYYGG0.".replace('0', 'O'),
+            "..OGGYYSSYYGGO..",
+            "...OYYYYYYYYO...",
+            "..OYYYYGGYYYYO..",
+            "..OYYGOOOGYYYO..",
+            ".OGGYO....OYGGO.",
+            ".OGGO......OGGO.",
+            "..OO........OO..",
+            "................",
+            "................"
+        ];
+        this.cache.star_1 = this.createPixelSprite(starFrame1, starPalette, 2);
+        this.cache.star_2 = this.createPixelSprite(starFrame2, starPalette, 2);
+
+        // --------------------------------------------------------------------
+        // 4E. WORLD 2 MONSTERS: MAGGOTRON, STINKTAIL SKUNK, TRASHJAW & BOSS 2
+        // --------------------------------------------------------------------
+        // 1) MAGGOTRON (Mutant Dumpster Grub - scuttles & lunges!)
+        const maggotPalette = {
+            'O': '#1e1c0a',
+            'C': '#f2eab6', // Plump larva cream
+            'Y': '#c9b85b', // Segment crease gold-tan
+            'S': '#75e01b', // Slime belly & spots
+            'R': '#ff2233', // Angry red eyes
+            'M': '#6b2814'  // Gnashing mandibles
+        };
+
+        const maggotWalk1 = [
+            "................",
+            "................",
+            "................",
+            "....OOOO.OOOO...",
+            "...OCCCOOCCCO...",
+            "..OCCCCYCCCCCO..",
+            ".OOCRCCCCCCCSCO.",
+            "OMMCRCCYCCCCYCCO",
+            "OMMCCCCYCCCCCSCO",
+            ".OYYYYYYYYYYYYO.",
+            ".OSSSSSSSSSSSSO.",
+            "..OOOOOOOOOOOO..",
+            "................",
+            "................",
+            "................",
+            "................"
+        ];
+
+        const maggotWalk2 = [
+            "................",
+            ".....OOOOOO.....",
+            "....OCCCCCCO....",
+            "...OCCCYCSCCO...",
+            "..OOCCCYCCCCOO..",
+            ".OCCRCCCCCCCSCO.",
+            "OMMCRCCYCCCCYCCO",
+            "OMMCCCCYCCCCCCO.",
+            ".OYYYYYYYYYYYOO.",
+            "..OSSSSSSSSSO...",
+            "...OOOOOOOOO....",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................"
+        ];
+
+        const maggotSquish = [
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "..OOOOOOOOOOOO..",
+            ".OCCRYYSSYYCCCO.",
+            "OSSSSSSSSSSSSSSO",
+            "OOOOOOOOOOOOOOOO",
+            "................",
+            "................",
+            "................"
+        ];
+        this.cache.maggot_1 = this.createPixelSprite(maggotWalk1, maggotPalette, 2);
+        this.cache.maggot_2 = this.createPixelSprite(maggotWalk2, maggotPalette, 2);
+        this.cache.maggot_squish = this.createPixelSprite(maggotSquish, maggotPalette, 2);
+
+        // 2) STINKTAIL (Punk-Rock Mutant Junkyard Skunk - lobs stink eggs!)
+        const skunkPalette = {
+            'O': '#0f0c14',
+            'K': '#262130', // Charcoal skunk fur
+            'W': '#f5f2ff', // Bright white stripe
+            'P': '#d938ff', // Punk magenta mohawk & stink aura
+            'Y': '#ffee22', // Fierce yellow eye
+            'N': '#ff6688'  // Snout
+        };
+
+        const skunkWalk1 = [
+            ".........OOOOOO.",
+            "...OO...OWWWWWKO",
+            "..OPPO..OWKKKKWO",
+            ".OPPPPO.OKWWWWKO",
+            ".OOKWWOO.OKKKKWO",
+            "OOKYKKWOO.OKWWKO",
+            "ONKKKKKWOOOOOO..",
+            ".OOOOOKKWWWWKO..",
+            "....OKKKKKKKKWO.",
+            "...OKKKKKKKKKKO.",
+            "...OKKKKKKKKKKO.",
+            "....OOOOOOOOOO..",
+            "....OKKO...OKKO.",
+            "....OOOO...OOOO.",
+            "................",
+            "................"
+        ];
+
+        const skunkWalk2 = [
+            "........OOOOOO..",
+            "...OO..OWWWWWKO.",
+            "..OPPO.OWKKKKWO.",
+            ".OPPPPOOKWWWWKO.",
+            ".OOKWWO.OKKKKWO.",
+            "OOKYKKWOOOKWWKO.",
+            "ONKKKKKWOOOOOO..",
+            ".OOOOOKKWWWWKO..",
+            "....OKKKKKKKKWO.",
+            "...OKKKKKKKKKKO.",
+            "...OKKKKKKKKKKO.",
+            "....OOOOOOOOOO..",
+            "...OKKO.....OKKO",
+            "...OOOO.....OOOO",
+            "................",
+            "................"
+        ];
+
+        const skunkSquish = [
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "..OOOOOOOOOOOO..",
+            ".OKKWWWWPPWWWWKO",
+            "ONKKYKKKKKKKKKKO",
+            "OOOOOOOOOOOOOOOO",
+            "................",
+            "................",
+            "................"
+        ];
+        this.cache.skunk_1 = this.createPixelSprite(skunkWalk1, skunkPalette, 2);
+        this.cache.skunk_2 = this.createPixelSprite(skunkWalk2, skunkPalette, 2);
+        this.cache.skunk_squish = this.createPixelSprite(skunkSquish, skunkPalette, 2);
+
+        // 3) TRASHJAW (Armored Galvanized Garbage-Can Mimic!)
+        const canPalette = {
+            'O': '#12161a',
+            'S': '#8a9ba8', // Galvanized steel
+            'L': '#cad8e3', // Bright steel highlight
+            'D': '#51606b', // Dark steel rib
+            'R': '#ff1a33', // Glowing monster eyes inside bin
+            'W': '#ffffe6', // Sharp fishbone fangs
+            'G': '#9eff1a', // Oozing garbage slime
+            'K': '#090b0d'  // Dark interior maw
+        };
+
+        const canWalk1 = [
+            ".....OOOOOO.....",
+            "..OOOSLLLLSOOO..",
+            ".OSSSSLLLLSSSSO.",
+            ".OOOOOOOOOOOOOO.",
+            ".OKKWRKKKKRWKKO.",
+            ".OKKWKKKKKKWKKO.",
+            ".OGGGGGKKGGGGGO.",
+            ".OSLDSLDSLDSLDO.",
+            ".OSLDSLDSLDSLDO.",
+            ".OSLDSLDSLDSLDO.",
+            ".OSLDSLDSLDSLDO.",
+            ".ODDDDDDDDDDDDO.",
+            "..OOOOOOOOOOOO..",
+            "...OSSO...OSSO..",
+            "...OOOO...OOOO..",
+            "................"
+        ];
+
+        const canWalk2 = [
+            "....OOOOOO......",
+            ".OOOSLLLLSOOO...",
+            "OSSSSLLLLSSSSO..",
+            ".OOOOOOOOOOOOOO.",
+            ".OKKRWKKKKWRKKO.",
+            ".OGGWKKKKKKWGGO.",
+            ".OOOOOOOOOOOOOO.",
+            ".OSLDSLDSLDSLDO.",
+            ".OSLDSLDSLDSLDO.",
+            ".OSLDSLDSLDSLDO.",
+            ".OSLDSLDSLDSLDO.",
+            ".ODDDDDDDDDDDDO.",
+            "..OOOOOOOOOOOO..",
+            "..OSSO.....OSSO.",
+            "..OOOO.....OOOO.",
+            "................"
+        ];
+
+        const canDented = [
+            "................",
+            "......OOOO......",
+            "..OOOOSLLSOOOO..",
+            ".OSSSSDDDDSSSSO.",
+            ".OOKWRKKKKRWKOO.",
+            "..OKWKKKKKKWKO..",
+            ".OOGGGGKKGGGGOO.",
+            ".ODSDSLDSLDSDSO.",
+            "..OSDSLDSLDSDO..",
+            ".ODSDSLDSLDSDSO.",
+            ".ODDDDDDDDDDDDO.",
+            "..OOOOOOOOOOOO..",
+            "...OSSO...OSSO..",
+            "...OOOO...OOOO..",
+            "................",
+            "................"
+        ];
+
+        const canSquish = [
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "..OOOOOOOOOOOO..",
+            ".OSLLDDDDDDLLSO.",
+            "OSSRGGWWWWGGRSSO",
+            "ODDDDDDDDDDDDDDO",
+            "OOOOOOOOOOOOOOOO",
+            "................",
+            "................",
+            "................"
+        ];
+        this.cache.canmonster_1 = this.createPixelSprite(canWalk1, canPalette, 2);
+        this.cache.canmonster_2 = this.createPixelSprite(canWalk2, canPalette, 2);
+        this.cache.canmonster_dented = this.createPixelSprite(canDented, canPalette, 2);
+        this.cache.canmonster_squish = this.createPixelSprite(canSquish, canPalette, 2);
+
+        // 4) EMPEROR GARBAGIO (WORLD 2-4 BOSS - 24x24 Sentient Landfill Monarch!)
+        const boss2Palette = {
+            'O': '#140c12', // Outline
+            'S': '#9eb0bd', // Tin-can crown & dumpster armor
+            'L': '#e1eef7', // Crown shine & bone fangs
+            'R': '#ff2244', // Furious furnace eyes
+            'P': '#c433ff', // Radioactive purple diaper/sludge veins
+            'T': '#6b5328', // Rotten compost heap body
+            'H': '#9c7c38', // Moldy cheese/cardboard chunks
+            'D': '#3d2d12', // Deep heap shadow
+            'G': '#9eff00', // Toxic landfill slime ooze
+            'Y': '#ffcc00'  // Hazard gold studs
+        };
+
+        const boss2Frame1 = [
+            "......OOOO....OOOO......",
+            ".....OSLLSOOOOSLLSO.....",
+            ".....OSSSSLLLLSSSSO.....",
+            ".....OSYSSSPPSSSYSO.....",
+            ".....OOOOOOOOOOOOOO.....",
+            "...OOTTTGGHHHHGGTTOO....",
+            "..OTTTGGGGHHHHGGGGTTO...",
+            "..ODDDDDDDDDDDDDDDDDO...",
+            ".OOTTPPRRLLTTLLRRPPTTOO.",
+            "OSSTTPPRRLLTTLLRRPPTTSSO",
+            "OSLTTTTTTTTTTTTTTTTTTLSO",
+            "OSSOODDDDDDDDDDDDDDOOSSO",
+            ".OOTTHHPPPTTTTPPPHHTTOO.",
+            ".OTTTGGGGGGGGGGGGGGTTTO.",
+            ".OTTTTOOOOOOOOOOOOTTTTO.",
+            ".OTTTOLOLOLLLLOLOLOTTTO.",
+            ".ODDDDOOOOOOOOOOOODDDDO.",
+            "OOTTTTTPPHHHHHHPPTTTTTOO",
+            "OTTTTHHGGTTTTTTGGHHTTTTO",
+            ".OTTTTTTTPPPPPPTTTTTTTO.",
+            ".ODDDDDDDDDDDDDDDDDDDDO.",
+            "..OOOOOOOOOOOOOOOOOOOO..",
+            "...OSSSSOO....OOSSSSO...",
+            "...OOOOOO......OOOOOO..."
+        ];
+
+        const boss2Frame2 = [
+            "........................",
+            "......OOOO....OOOO......",
+            ".....OSLLSOOOOSLLSO.....",
+            ".....OSSSSLLLLSSSSO.....",
+            ".....OSYSSSPPSSSYSO.....",
+            ".....OOOOOOOOOOOOOO.....",
+            "...OOTTTGGHHHHGGTTOO....",
+            "..OTTTGGGGHHHHGGGGTTO...",
+            "..ODDDDDDDDDDDDDDDDDO...",
+            ".OOTTPPRRLLTTLLRRPPTTOO.",
+            "OSSTTPPRRLLTTLLRRPPTTSSO",
+            "OSLTTTTTTTTTTTTTTTTTTLSO",
+            "OSSOODDDDDDDDDDDDDDOOSSO",
+            ".OOTTHHPPPTTTTPPPHHTTOO.",
+            ".OTTTGGGGGGGGGGGGGGTTTO.",
+            ".OTTTTOOOOOOOOOOOOTTTTO.",
+            ".OTTTOLOLOLLLLOLOLOTTTO.",
+            ".ODDDDOOOOOOOOOOOODDDDO.",
+            "OOTTTTTPPHHHHHHPPTTTTTOO",
+            ".OTTTTHHGGTTTTGGHHTTTTO.",
+            ".ODDDDDDDDDDDDDDDDDDDDO.",
+            "..OOOOOOOOOOOOOOOOOOOO..",
+            "..OOSSSSOO......OOSSSSOO",
+            "..OOOOOOO........OOOOOOO"
+        ];
+
+        this.cache.boss2_1 = this.createPixelSprite(boss2Frame1, boss2Palette, 2);
+        this.cache.boss2_2 = this.createPixelSprite(boss2Frame2, boss2Palette, 2);
+
+        // --------------------------------------------------------------------
+        // 5. TILES: SEWER & LANDFILL TILES, CRATES, CARDBOARD, CONVEYORS
         // --------------------------------------------------------------------
         this.buildTileSprites();
     }
@@ -770,6 +1180,268 @@ class SpriteBank {
         cctx.fillRect(17, 13, 14, 2);
         cctx.fillRect(12, 29, 19, 2);
         this.cache.tile_castle = castle;
+
+        // --------------------------------------------------------------------
+        // WORLD 2 TILES: THE ROTTEN LANDFILL, FACTORY, MARSH & INCINERATOR
+        // --------------------------------------------------------------------
+
+        // 32x32 Compacted Landfill Trash Ground (World 2-1)
+        const trashGround = document.createElement('canvas');
+        trashGround.width = 32;
+        trashGround.height = 32;
+        const tgctx = trashGround.getContext('2d');
+        tgctx.fillStyle = '#1a120b';
+        tgctx.fillRect(0, 0, 32, 32);
+        // Compacted rust/cardboard/garbage chunks
+        tgctx.fillStyle = '#5c3d1e';
+        tgctx.fillRect(1, 6, 14, 11);
+        tgctx.fillStyle = '#474f54'; // Crushed tin scrap
+        tgctx.fillRect(17, 6, 14, 11);
+        tgctx.fillStyle = '#6e4920';
+        tgctx.fillRect(2, 19, 17, 11);
+        tgctx.fillStyle = '#3d2838'; // Rotting plastic bag
+        tgctx.fillRect(21, 19, 10, 11);
+        // Highlights
+        tgctx.fillStyle = '#8c6232';
+        tgctx.fillRect(1, 6, 14, 2);
+        tgctx.fillStyle = '#788891';
+        tgctx.fillRect(17, 6, 14, 2);
+        // Toxic mustard-purple landfill crust on top
+        tgctx.fillStyle = '#b88c14';
+        tgctx.fillRect(0, 0, 32, 5);
+        tgctx.fillRect(5, 5, 5, 3);
+        tgctx.fillRect(21, 5, 4, 4);
+        tgctx.fillStyle = '#e6c829';
+        tgctx.fillRect(0, 0, 32, 2);
+        tgctx.fillStyle = '#a833ff';
+        tgctx.fillRect(12, 1, 6, 3);
+        this.cache.tile_trash_ground = trashGround;
+
+        // 32x32 Destructible Rusted Scrap Crate Brick (World 2 Bricks)
+        const scrapBrick = document.createElement('canvas');
+        scrapBrick.width = 32;
+        scrapBrick.height = 32;
+        const sbctx = scrapBrick.getContext('2d');
+        sbctx.fillStyle = '#1f1209';
+        sbctx.fillRect(0, 0, 32, 32);
+        sbctx.fillStyle = '#8a5220';
+        sbctx.fillRect(2, 2, 28, 28);
+        // Outer crate frame
+        sbctx.fillStyle = '#b57435';
+        sbctx.fillRect(2, 2, 28, 4);
+        sbctx.fillRect(2, 2, 4, 28);
+        sbctx.fillStyle = '#593210';
+        sbctx.fillRect(2, 26, 28, 4);
+        sbctx.fillRect(26, 2, 4, 28);
+        // Diagonal brace & plank seams
+        sbctx.fillStyle = '#42240a';
+        sbctx.fillRect(6, 15, 20, 2);
+        for (let d = 6; d < 24; d += 2) {
+            sbctx.fillStyle = '#a8682c';
+            sbctx.fillRect(d, d, 4, 3);
+        }
+        // Corner iron nails
+        sbctx.fillStyle = '#cbd6de';
+        sbctx.fillRect(4, 4, 2, 2);
+        sbctx.fillRect(26, 4, 2, 2);
+        sbctx.fillRect(4, 26, 2, 2);
+        sbctx.fillRect(26, 26, 2, 2);
+        this.cache.tile_scrap_brick = scrapBrick;
+
+        // 32x32 Compactor Factory Steel Plate Ground (World 2-2)
+        const factoryGround = document.createElement('canvas');
+        factoryGround.width = 32;
+        factoryGround.height = 32;
+        const fgctx = factoryGround.getContext('2d');
+        fgctx.fillStyle = '#0f1417';
+        fgctx.fillRect(0, 0, 32, 32);
+        fgctx.fillStyle = '#34414a';
+        fgctx.fillRect(2, 7, 28, 23);
+        fgctx.fillStyle = '#526573';
+        fgctx.fillRect(2, 7, 28, 2);
+        fgctx.fillRect(15, 7, 2, 23);
+        // Yellow & black caution hazard top trim!
+        fgctx.fillStyle = '#e6b800';
+        fgctx.fillRect(0, 0, 32, 6);
+        fgctx.fillStyle = '#1a1a1a';
+        for (let hx = 0; hx < 32; hx += 8) {
+            fgctx.fillRect(hx, 0, 4, 3);
+            fgctx.fillRect(hx + 2, 3, 4, 3);
+        }
+        this.cache.tile_factory_ground = factoryGround;
+
+        // 32x32 Moldy Swiss-Cheese Marsh Rind Ground (World 2-3)
+        const marshGround = document.createElement('canvas');
+        marshGround.width = 32;
+        marshGround.height = 32;
+        const mgctx = marshGround.getContext('2d');
+        mgctx.fillStyle = '#1f1c08';
+        mgctx.fillRect(0, 0, 32, 32);
+        mgctx.fillStyle = '#c49b1d'; // Aged cheddar/Swiss body
+        mgctx.fillRect(1, 5, 30, 26);
+        // Cheese holes!
+        mgctx.fillStyle = '#785a0c';
+        mgctx.fillRect(5, 10, 6, 5);
+        mgctx.fillRect(20, 12, 7, 6);
+        mgctx.fillRect(11, 21, 8, 6);
+        // Blue-green Roquefort mold crust on top
+        mgctx.fillStyle = '#2d9e6b';
+        mgctx.fillRect(0, 0, 32, 5);
+        mgctx.fillRect(3, 5, 6, 3);
+        mgctx.fillRect(18, 5, 5, 4);
+        mgctx.fillStyle = '#6ef2a8';
+        mgctx.fillRect(0, 0, 32, 2);
+        this.cache.tile_marsh_ground = marshGround;
+
+        // 32x32 Scorched Incinerator Furnace Stone (World 2-4)
+        const incin = document.createElement('canvas');
+        incin.width = 32;
+        incin.height = 32;
+        const ictx = incin.getContext('2d');
+        ictx.fillStyle = '#26080d'; // Glowing ember mortar
+        ictx.fillRect(0, 0, 32, 32);
+        ictx.fillStyle = '#ff551a';
+        ictx.fillRect(0, 15, 32, 2);
+        ictx.fillRect(15, 0, 2, 15);
+        ictx.fillRect(9, 17, 2, 15);
+        // Dark slag blocks
+        ictx.fillStyle = '#291f24';
+        ictx.fillRect(1, 1, 14, 14);
+        ictx.fillRect(17, 1, 14, 14);
+        ictx.fillRect(1, 17, 8, 14);
+        ictx.fillRect(11, 17, 20, 14);
+        ictx.fillStyle = '#4d3842';
+        ictx.fillRect(1, 1, 14, 2);
+        ictx.fillRect(17, 1, 14, 2);
+        ictx.fillRect(11, 17, 20, 2);
+        this.cache.tile_incinerator = incin;
+
+        // 32x32 Soggy Corrugated Cardboard Crumble Platform (World 2-3 & 2-4)
+        const cardboard = document.createElement('canvas');
+        cardboard.width = 32;
+        cardboard.height = 32;
+        const cbctx = cardboard.getContext('2d');
+        cbctx.fillStyle = '#24170b';
+        cbctx.fillRect(0, 0, 32, 18);
+        cbctx.fillStyle = '#a87c47';
+        cbctx.fillRect(1, 2, 30, 14);
+        cbctx.fillStyle = '#d4aa6e';
+        cbctx.fillRect(1, 2, 30, 3);
+        // Corrugated wavy inner flute layer!
+        cbctx.fillStyle = '#593d1c';
+        cbctx.fillRect(1, 8, 30, 4);
+        cbctx.fillStyle = '#cfa163';
+        for (let cx = 2; cx < 30; cx += 4) {
+            cbctx.fillRect(cx, 9, 2, 2);
+        }
+        // Soggy grease/mold stain & peeling packing tape
+        cbctx.fillStyle = '#6b8c21';
+        cbctx.fillRect(18, 3, 9, 5);
+        cbctx.fillStyle = '#e6dec8';
+        cbctx.fillRect(8, 1, 6, 8);
+        this.cache.tile_cardboard = cardboard;
+    }
+
+    // Draw a detailed 8-bit World 2 Biohazard Oil-Drum Stack (Landfill Pipe equivalent!)
+    drawOilDrumPipe(ctx, x, y, width, height) {
+        const lipHeight = 22;
+        const bodyX = x + 3;
+        const bodyW = width - 6;
+
+        // Rusted Yellow/Amber Hazard Drum Body
+        ctx.fillStyle = '#1c1206';
+        ctx.fillRect(bodyX, y + lipHeight, bodyW, height - lipHeight);
+
+        ctx.fillStyle = '#b87d14';
+        ctx.fillRect(bodyX + 2, y + lipHeight, bodyW - 4, height - lipHeight);
+
+        // Specular highlight & dark rust shadow
+        ctx.fillStyle = '#f2be2e';
+        ctx.fillRect(bodyX + 8, y + lipHeight, 9, height - lipHeight);
+        ctx.fillStyle = '#ffe678';
+        ctx.fillRect(bodyX + 11, y + lipHeight, 3, height - lipHeight);
+        ctx.fillStyle = '#6e4209';
+        ctx.fillRect(bodyX + bodyW - 13, y + lipHeight, 11, height - lipHeight);
+
+        // Horizontal Drum Ribs every 28px
+        for (let ry = y + lipHeight + 18; ry < y + height - 8; ry += 28) {
+            ctx.fillStyle = '#291a08';
+            ctx.fillRect(bodyX, ry, bodyW, 5);
+            ctx.fillStyle = '#ffd24d';
+            ctx.fillRect(bodyX + 2, ry + 1, bodyW - 4, 2);
+        }
+
+        // Biohazard Stripe Band in Center of Top Drum
+        if (height >= 56) {
+            const bandY = y + lipHeight + 4;
+            ctx.fillStyle = '#1f1a1c';
+            ctx.fillRect(bodyX + 16, bandY, 20, 12);
+            ctx.fillStyle = '#ffaa00';
+            ctx.fillRect(bodyX + 22, bandY + 2, 8, 8);
+            ctx.fillStyle = '#1f1a1c';
+            ctx.fillRect(bodyX + 25, bandY + 4, 2, 4);
+        }
+
+        // Top Dented Steel Rim
+        ctx.fillStyle = '#1a1412';
+        ctx.fillRect(x, y, width, lipHeight);
+        ctx.fillStyle = '#73828c';
+        ctx.fillRect(x + 2, y + 2, width - 4, lipHeight - 4);
+        ctx.fillStyle = '#b8c9d4';
+        ctx.fillRect(x + 9, y + 2, 12, lipHeight - 4);
+        ctx.fillStyle = '#434e54';
+        ctx.fillRect(x + width - 15, y + 2, 13, lipHeight - 4);
+
+        // Oozing Radioactive Purple-Lime Landfill Goop!
+        ctx.fillStyle = '#b833ff';
+        ctx.fillRect(x + 6, y + 2, 11, 5);
+        ctx.fillRect(x + 9, y + 7, 4, 9);
+        ctx.fillStyle = '#9eff24';
+        ctx.fillRect(x + width - 22, y + 2, 9, 4);
+        ctx.fillRect(x + width - 19, y + 6, 4, 7);
+    }
+
+    // Draw an animated 32x32 Motorized Conveyor Belt Tile (dir = 1 right, -1 left)
+    drawConveyorTile(ctx, x, y, dir, worldTick) {
+        ctx.fillStyle = '#0d1214';
+        ctx.fillRect(x, y, 32, 22);
+
+        // Rubber belt surface
+        ctx.fillStyle = '#2d373d';
+        ctx.fillRect(x + 1, y + 2, 30, 18);
+
+        // Animated rolling treads along top & bottom edges
+        const offset = ((Math.floor(worldTick * 0.45) * dir) % 8 + 8) % 8;
+        ctx.fillStyle = '#ffaa00';
+        for (let tx = offset; tx < 30; tx += 8) {
+            ctx.fillRect(x + 1 + tx, y + 1, 4, 3);
+        }
+        const botOffset = ((8 - offset) % 8 + 8) % 8;
+        ctx.fillStyle = '#73848f';
+        for (let tx = botOffset; tx < 30; tx += 8) {
+            ctx.fillRect(x + 1 + tx, y + 18, 4, 3);
+        }
+
+        // Center gear housing & directional neon chevron (▶ or ◀)
+        ctx.fillStyle = '#182024';
+        ctx.fillRect(x + 4, y + 6, 24, 10);
+        const pulseCol = (Math.floor(worldTick / 10) % 2 === 0) ? '#33ffcc' : '#9eff24';
+        ctx.fillStyle = pulseCol;
+        if (dir > 0) {
+            // Right chevron ▶▶
+            ctx.fillRect(x + 9, y + 8, 3, 6);
+            ctx.fillRect(x + 12, y + 9, 3, 4);
+            ctx.fillRect(x + 15, y + 10, 2, 2);
+            ctx.fillRect(x + 19, y + 8, 3, 6);
+            ctx.fillRect(x + 22, y + 9, 2, 4);
+        } else {
+            // Left chevron ◀◀
+            ctx.fillRect(x + 14, y + 8, 3, 6);
+            ctx.fillRect(x + 11, y + 9, 3, 4);
+            ctx.fillRect(x + 9, y + 10, 2, 2);
+            ctx.fillRect(x + 22, y + 8, 3, 6);
+            ctx.fillRect(x + 19, y + 9, 3, 4);
+        }
     }
 
     // Draw a detailed 8-bit Sewer Pipe of any height on the main canvas
