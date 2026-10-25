@@ -90,11 +90,113 @@ body {
 }
 
 .top-controls,
-.level-selector {
+.level-selector,
+.level-dropdown-wrap {
     display: flex;
     gap: 6px;
     align-items: center;
     flex-wrap: wrap;
+}
+
+/* Retro Stage Dropdown Menu */
+.level-dropdown-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dropdown-label {
+    font-size: 9px;
+    color: var(--toxic-glow);
+    text-shadow: 1px 1px 0 #000;
+    letter-spacing: 0.5px;
+}
+
+.retro-select-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.retro-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: #1b3322;
+    color: var(--text-light);
+    border: 3px solid #4d7859;
+    padding: 7px 26px 7px 9px;
+    font-family: inherit;
+    font-size: 9px;
+    line-height: 1.2;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #0d1710;
+    transition: transform 0.08s, background 0.15s, border-color 0.15s;
+    touch-action: manipulation;
+    max-width: 250px;
+    border-radius: 0;
+}
+
+.retro-select:hover,
+.retro-select:focus {
+    background: #24482f;
+    border-color: var(--slime-green);
+    color: var(--toxic-glow);
+    outline: none;
+}
+
+.retro-select.lvl-w2 {
+    background: #332418;
+    border-color: #9e6b2b;
+    color: #ffe8c2;
+}
+
+.retro-select.lvl-w2:hover,
+.retro-select.lvl-w2:focus {
+    background: #4a331f;
+    border-color: #ffaa00;
+    color: #ffd700;
+}
+
+.retro-select optgroup {
+    background: #0d1711;
+    color: var(--slime-green);
+    font-family: inherit;
+    font-weight: bold;
+}
+
+.retro-select option {
+    background: #142219;
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 11px;
+    padding: 4px;
+}
+
+.retro-select-caret {
+    position: absolute;
+    right: 8px;
+    pointer-events: none;
+    font-size: 8px;
+    color: var(--slime-green);
+    transition: transform 0.15s ease;
+}
+
+.retro-select.lvl-w2 + .retro-select-caret {
+    color: #ffaa00;
+}
+
+.close-menu-btn {
+    display: none;
+    background: #3b2020;
+    border-color: #8c4242;
+    color: #ffd2d2;
+}
+
+.close-menu-btn:hover {
+    background: #542828;
+    border-color: #ff5555;
+    color: #ffffff;
 }
 
 .retro-btn {
@@ -350,7 +452,7 @@ body {
    ============================================================================ */
 :fullscreen,
 ::backdrop {
-    background-color: #070d09;
+    background-color: #000000;
 }
 
 .arcade-wrapper:fullscreen,
@@ -359,14 +461,19 @@ body {
     width: 100vw !important;
     max-width: 100vw !important;
     height: 100vh !important;
+    height: 100dvh !important;
     height: -webkit-fill-available !important;
     max-height: 100vh !important;
+    max-height: 100dvh !important;
     border: none !important;
     border-radius: 0 !important;
-    padding: env(safe-area-inset-top, 6px) env(safe-area-inset-right, 8px) env(safe-area-inset-bottom, 6px) env(safe-area-inset-left, 8px) !important;
+    padding: 0 !important;
     margin: 0 !important;
-    justify-content: space-between;
-    background: #070d09;
+    justify-content: center !important;
+    align-items: center !important;
+    background: #000000 !important;
+    position: relative;
+    overflow: hidden;
 }
 
 .arcade-wrapper.is-fullscreen {
@@ -381,23 +488,86 @@ body {
 .arcade-wrapper:fullscreen #canvas-container,
 .arcade-wrapper:-webkit-full-screen #canvas-container,
 .arcade-wrapper.is-fullscreen #canvas-container {
-    max-width: 100%;
-    max-height: calc(100vh - 58px);
-    border: 2px solid #2b4432;
-    border-radius: 4px;
-    flex-grow: 1;
+    width: min(100vw, calc(100vh * 5 / 3)) !important;
+    width: min(100vw, calc(100dvh * 5 / 3)) !important;
+    height: min(100vh, calc(100vw * 3 / 5)) !important;
+    height: min(100dvh, calc(100vw * 3 / 5)) !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    max-height: 100dvh !important;
+    aspect-ratio: 800 / 480 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    flex: none !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    margin: auto !important;
 }
 
 .arcade-wrapper:fullscreen .controls-panel,
 .arcade-wrapper:-webkit-full-screen .controls-panel,
 .arcade-wrapper.is-fullscreen .controls-panel {
-    display: none;
+    display: none !important;
 }
 
+/* In fullscreen mode, the header becomes a slide-down overlay menu that never reduces gameplay area */
 .arcade-wrapper:fullscreen .game-header,
 .arcade-wrapper:-webkit-full-screen .game-header,
 .arcade-wrapper.is-fullscreen .game-header {
-    padding: 2px 8px;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 50 !important;
+    background: rgba(11, 19, 14, 0.96) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border-bottom: 3px solid var(--slime-green) !important;
+    padding: max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) 10px max(12px, env(safe-area-inset-left)) !important;
+    margin: 0 !important;
+    transform: translateY(-105%);
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.9);
+}
+
+.arcade-wrapper:fullscreen .game-header.menu-open,
+.arcade-wrapper:-webkit-full-screen .game-header.menu-open,
+.arcade-wrapper.is-fullscreen .game-header.menu-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.arcade-wrapper:fullscreen .close-menu-btn,
+.arcade-wrapper:-webkit-full-screen .close-menu-btn,
+.arcade-wrapper.is-fullscreen .close-menu-btn {
+    display: inline-flex;
+}
+
+/* On desktop devices with mouse, hovering the top 18px reveals the menu bar smoothly */
+@media (hover: hover) and (pointer: fine) {
+    .arcade-wrapper:fullscreen::before,
+    .arcade-wrapper:-webkit-full-screen::before,
+    .arcade-wrapper.is-fullscreen::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 18px;
+        z-index: 49;
+    }
+
+    .arcade-wrapper:fullscreen .game-header:hover,
+    .arcade-wrapper:-webkit-full-screen .game-header:hover,
+    .arcade-wrapper.is-fullscreen .game-header:hover {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
 }
 
 /* ============================================================================
@@ -508,13 +678,31 @@ body {
     }
 
     .level-selector,
+    .level-dropdown-wrap,
     .top-controls {
-        gap: 2px;
+        gap: 3px;
+    }
+
+    .dropdown-label {
+        font-size: 7px;
+    }
+
+    .retro-select {
+        padding: 4px 20px 4px 6px;
+        font-size: 7px;
+        max-width: 175px;
+        border-width: 2px;
+        box-shadow: 0 2px 0 #0d1710;
+    }
+
+    .retro-select-caret {
+        right: 6px;
+        font-size: 7px;
     }
 
     .game-header .retro-btn {
-        padding: 3px 4px;
-        font-size: 6.5px;
+        padding: 3px 5px;
+        font-size: 7px;
         border-width: 2px;
         box-shadow: 0 2px 0 #0d1710;
     }
@@ -702,30 +890,47 @@ body {
 }
 
 /* ============================================================================
-   FLOATING IN-GAME FULLSCREEN BUTTON
+   FLOATING IN-GAME QUICK BAR (Menu / Stage Selector & Fullscreen Toggle)
    Sits inside the canvas (just below the HUD bar) so it is never hidden by
    the mobile browser address bar in landscape.
    ============================================================================ */
-.fs-float-btn {
+.in-game-quick-bar {
     display: none;
     position: absolute;
     top: calc(9.2% + 6px); /* just below the 44px HUD strip (44 / 480) */
     right: 8px;
-    width: 40px;
-    height: 40px;
-    z-index: 11;
+    z-index: 12;
+    gap: 6px;
+    align-items: center;
+}
+
+.fs-float-btn {
+    display: inline-flex;
+    height: 38px;
+    min-width: 38px;
+    padding: 0 8px;
     border-radius: 8px;
     border: 2px solid #578a63;
-    background: rgba(20, 40, 27, 0.78);
+    background: rgba(20, 40, 27, 0.88);
     color: var(--text-light);
     font-family: inherit;
-    font-size: 20px;
+    font-size: 14px;
     line-height: 1;
     cursor: pointer;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     box-shadow: 0 3px 0 #09130d;
-    opacity: 0.85;
+    opacity: 0.9;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    transition: transform 0.08s, background 0.15s, border-color 0.15s;
+}
+
+.fs-float-btn:hover {
+    background: rgba(30, 60, 40, 0.98);
+    border-color: var(--slime-green);
+    color: var(--toxic-glow);
 }
 
 .fs-float-btn:active {
@@ -738,13 +943,33 @@ body {
     color: var(--slime-green);
 }
 
-/* Show on touch devices and small landscape screens */
+.menu-float-btn {
+    border-color: #4d7859;
+    font-size: 10px;
+}
+
+.float-icon {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.float-label {
+    font-size: 8px;
+    font-family: inherit;
+    letter-spacing: 0.5px;
+}
+
+/* Show in-game quick bar on touch devices, small landscape screens, and in fullscreen */
 @media (pointer: coarse), (orientation: landscape) and (max-height: 540px) {
-    .fs-float-btn {
+    .in-game-quick-bar {
         display: flex;
-        justify-content: center;
-        align-items: center;
     }
+}
+
+.arcade-wrapper:fullscreen .in-game-quick-bar,
+.arcade-wrapper:-webkit-full-screen .in-game-quick-bar,
+.arcade-wrapper.is-fullscreen .in-game-quick-bar {
+    display: flex;
 }
 
 /* ============================================================================

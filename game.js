@@ -77,6 +77,70 @@ window.addEventListener('keyup', (e) => {
 // UI Buttons
 const btnFullscreen = document.getElementById('btn-fullscreen');
 const arcadeWrapper = document.getElementById('arcade-wrapper');
+const gameHeader = document.querySelector('.game-header');
+const btnMenuFloat = document.getElementById('btn-menu-float');
+const btnMenuClose = document.getElementById('btn-menu-close');
+const levelSelect = document.getElementById('level-select');
+
+function toggleFullscreenMenu() {
+    if (!gameHeader) return;
+    const isOpen = gameHeader.classList.toggle('menu-open');
+    if (btnMenuFloat) {
+        btnMenuFloat.classList.toggle('active', isOpen);
+    }
+}
+
+function closeFullscreenMenu() {
+    if (gameHeader && gameHeader.classList.contains('menu-open')) {
+        gameHeader.classList.remove('menu-open');
+        if (btnMenuFloat) {
+            btnMenuFloat.classList.remove('active');
+        }
+    }
+}
+
+if (btnMenuFloat) {
+    btnMenuFloat.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleFullscreenMenu();
+        btnMenuFloat.blur();
+    });
+}
+
+if (btnMenuClose) {
+    btnMenuClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeFullscreenMenu();
+        btnMenuClose.blur();
+    });
+}
+
+// Close fullscreen menu on click outside
+document.addEventListener('click', (e) => {
+    if (gameHeader && gameHeader.classList.contains('menu-open')) {
+        if (!gameHeader.contains(e.target) && (!btnMenuFloat || !btnMenuFloat.contains(e.target))) {
+            closeFullscreenMenu();
+        }
+    }
+});
+
+// Toggle menu on 'M', close on Escape
+window.addEventListener('keydown', (e) => {
+    if (e.code === 'KeyM') {
+        toggleFullscreenMenu();
+    } else if (e.code === 'Escape') {
+        closeFullscreenMenu();
+    }
+});
+
+if (levelSelect) {
+    levelSelect.addEventListener('change', (e) => {
+        const lvl = parseInt(e.target.value, 10);
+        game.selectLevel(lvl);
+        levelSelect.blur();
+        closeFullscreenMenu();
+    });
+}
 
 function isFullscreenActive() {
     return !!(
@@ -158,6 +222,7 @@ function exitFullscreen() {
     if (arcadeWrapper) {
         arcadeWrapper.classList.remove('is-fullscreen');
     }
+    closeFullscreenMenu();
     updateFullscreenBtn();
 }
 
@@ -310,6 +375,7 @@ document.getElementById('btn-crt').addEventListener('click', (e) => {
 
 document.getElementById('btn-restart').addEventListener('click', (e) => {
     game.resetLevel();
+    closeFullscreenMenu();
     e.target.blur();
 });
 
@@ -2171,6 +2237,11 @@ class Game {
     }
 
     updateLevelButtons() {
+        const select = document.getElementById('level-select');
+        if (select) {
+            select.value = String(this.currentLevel);
+            select.classList.toggle('lvl-w2', this.currentLevel >= 5);
+        }
         document.querySelectorAll('.lvl-btn').forEach((btn) => {
             const bLvl = parseInt(btn.getAttribute('data-level'), 10);
             btn.classList.toggle('active', bLvl === this.currentLevel);
@@ -4364,10 +4435,51 @@ if (btnStartPlay) {
 
 showStartScreen();
 
-function gameLoop() {
-    if (game.started) game.update();
+// ============================================================================
+// FIXED 60 FPS PHYSICS TIMESTEP GAME LOOP
+// Guarantees consistent physics, jump arcs, enemy speeds, and timer rates
+// on all display refresh rates (60Hz PC, 120Hz Samsung Galaxy S23, 90/144Hz)
+// ============================================================================
+const FIXED_TIMESTEP_MS = 1000 / 60; // 16.66667 ms per update tick
+const MAX_SUB_STEPS = 5;             // Safety clamp against spiral of death
+let lastFrameTime = 0;
+let accumulator = 0;
+
+function gameLoop(currentTime) {
+    if (!lastFrameTime) {
+        lastFrameTime = currentTime;
+    }
+    let delta = currentTime - lastFrameTime;
+    lastFrameTime = currentTime;
+
+    // Safety clamp: if tab was backgrounded or delayed, limit to 200ms
+    if (delta > 200) delta = 200;
+    if (delta < 0) delta = 0;
+
+    accumulator += delta;
+
+    let steps = 0;
+    while (accumulator >= FIXED_TIMESTEP_MS && steps < MAX_SUB_STEPS) {
+        if (game.started) {
+            game.update();
+        }
+        accumulator -= FIXED_TIMESTEP_MS;
+        steps++;
+    }
+
+    if (steps >= MAX_SUB_STEPS) {
+        accumulator = 0;
+    }
+
     game.draw();
     requestAnimationFrame(gameLoop);
 }
+
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        lastFrameTime = performance.now();
+        accumulator = 0;
+    }
+});
 
 requestAnimationFrame(gameLoop);
