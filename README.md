@@ -9,6 +9,16 @@ An 8-bit retro side-scrolling platformer inspired by the classic arcade era, fea
 
 ---
 
+## 🎬 Level Briefing & One-Tap Fullscreen
+Before every level, a **briefing splash screen** shows the world number, level name, the **🎯 level goal**, and a quick controls cheat-sheet. The game stays paused (and silent) until you start.
+
+- **⛶ PLAY FULLSCREEN** — enters fullscreen *and* starts the level in a single tap (on Android it also locks the screen to landscape). Perfect for phones, where the browser address bar can hide the top of the page in landscape.
+- **▶ PLAY** — starts the level without fullscreen. Desktop players can just press `Enter` or `Space`.
+- A floating **⛶** button inside the game screen (just below the HUD) lets touch players toggle fullscreen at any time without hunting for the header button.
+- iPhone Safari doesn't allow true fullscreen for web pages, so the game uses an edge-to-edge fallback and suggests **Share → Add to Home Screen** for the full experience.
+
+---
+
 ## 📖 Story & Lore
 Deep beneath the city, deep in the subterranean drainage catacombs, lies **The Sewer Kingdom**. The nefarious **King Poopa** and his army of sentient fecal turds, mutating bacteria germs, and winged sewer flies have clogged the Great Drain and seized the Royal Porcelain Throne!
 
@@ -24,7 +34,8 @@ Enter **Fartio**: plumber, chili enthusiast, and master of acoustic propulsion. 
 | **Fart Jump** | `W` / `Space` / `▲` | `💨 JUMP` Virtual Button |
 | **Double Fart Boost** | `W` / `Space` (in mid-air) | `💨 JUMP` (tap again while airborne) |
 | **Shoot Toxic Gas / Sprint** | `X` / `Shift` / `J` / `Z` | `☣️ GAS` Virtual Button |
-| **Toggle Full Screen** | `⛶ FULLSCREEN` button | Fullscreen API + iOS Safari Edge-to-Edge Mode |
+| **Start Level (Briefing Screen)** | `Enter` / `Space` | `⛶ PLAY FULLSCREEN` or `▶ PLAY` |
+| **Toggle Full Screen** | `⛶ FULLSCREEN` button | Floating in-game `⛶` button (Fullscreen API + iOS edge-to-edge fallback) |
 | **Warp to Level** | `1`, `2`, `3`, `4` | Top Level Selector Buttons (`1-1` to `1-4 👑`) |
 | **Advance Next Level** | `Enter` / `N` | Tap screen or press Enter when level cleared |
 | **Restart Level** | `R` | `🔄 RESTART` button |

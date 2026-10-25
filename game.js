@@ -23,6 +23,20 @@ const keys = {
 
 window.addEventListener('keydown', (e) => {
     const code = e.code;
+
+    // While the level briefing splash is up, only allow starting / level warping
+    if (!game.started) {
+        if (code === 'Enter' || code === 'Space' || code === 'NumpadEnter') {
+            e.preventDefault();
+            startGame(false);
+        }
+        if (code === 'Digit1') game.selectLevel(1);
+        if (code === 'Digit2') game.selectLevel(2);
+        if (code === 'Digit3') game.selectLevel(3);
+        if (code === 'Digit4') game.selectLevel(4);
+        return;
+    }
+
     if (code === 'ArrowLeft' || code === 'KeyA') keys.left = true;
     if (code === 'ArrowRight' || code === 'KeyD') keys.right = true;
     if (code === 'ArrowUp' || code === 'KeyW' || code === 'Space') {
@@ -76,46 +90,100 @@ function isFullscreenActive() {
     );
 }
 
+const btnFsFloat = document.getElementById('btn-fs-float');
+
+// True when the browser exposes a real Fullscreen API for elements
+// (iPhone Safari does not, so we fall back to the CSS "is-fullscreen" mode)
+const nativeFullscreenSupported = !!(
+    arcadeWrapper && (
+        arcadeWrapper.requestFullscreen ||
+        arcadeWrapper.webkitRequestFullscreen ||
+        arcadeWrapper.msRequestFullscreen
+    )
+);
+
 function updateFullscreenBtn() {
+    const active = isFullscreenActive();
     if (btnFullscreen) {
-        const active = isFullscreenActive();
         btnFullscreen.textContent = active ? '⛶ EXIT FULL' : '⛶ FULLSCREEN';
         btnFullscreen.classList.toggle('active', active);
+    }
+    if (btnFsFloat) {
+        btnFsFloat.classList.toggle('active', active);
+        btnFsFloat.title = active ? 'Exit Full Screen' : 'Enter Full Screen';
+    }
+}
+
+// Best-effort landscape lock once fullscreen (supported on Android Chrome)
+function tryLockLandscape() {
+    try {
+        if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('landscape').catch(() => {});
+        }
+    } catch (_) {}
+}
+
+function useCssFullscreenFallback() {
+    if (!arcadeWrapper) return;
+    arcadeWrapper.classList.add('is-fullscreen');
+    window.scrollTo(0, 1);
+    updateFullscreenBtn();
+}
+
+function enterFullscreen() {
+    if (!arcadeWrapper || isFullscreenActive()) return;
+    if (arcadeWrapper.requestFullscreen) {
+        const p = arcadeWrapper.requestFullscreen({ navigationUI: 'hide' });
+        if (p && p.then) {
+            p.then(tryLockLandscape).catch(useCssFullscreenFallback);
+        } else {
+            tryLockLandscape();
+        }
+    } else if (arcadeWrapper.webkitRequestFullscreen) {
+        arcadeWrapper.webkitRequestFullscreen();
+        tryLockLandscape();
+    } else if (arcadeWrapper.msRequestFullscreen) {
+        arcadeWrapper.msRequestFullscreen();
+    } else {
+        useCssFullscreenFallback();
+    }
+}
+
+function exitFullscreen() {
+    if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+    } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    } else if (document.msFullscreenElement && document.msExitFullscreen) {
+        document.msExitFullscreen();
+    }
+    if (arcadeWrapper) {
+        arcadeWrapper.classList.remove('is-fullscreen');
+    }
+    updateFullscreenBtn();
+}
+
+function toggleFullscreen() {
+    window.soundFX.init();
+    if (isFullscreenActive()) {
+        exitFullscreen();
+    } else {
+        enterFullscreen();
     }
 }
 
 if (btnFullscreen) {
     btnFullscreen.addEventListener('click', () => {
-        window.soundFX.init();
-        if (!isFullscreenActive()) {
-            if (arcadeWrapper && arcadeWrapper.requestFullscreen) {
-                arcadeWrapper.requestFullscreen().catch(() => {
-                    arcadeWrapper.classList.add('is-fullscreen');
-                    updateFullscreenBtn();
-                });
-            } else if (arcadeWrapper && arcadeWrapper.webkitRequestFullscreen) {
-                arcadeWrapper.webkitRequestFullscreen();
-            } else if (arcadeWrapper && arcadeWrapper.msRequestFullscreen) {
-                arcadeWrapper.msRequestFullscreen();
-            } else if (arcadeWrapper) {
-                arcadeWrapper.classList.add('is-fullscreen');
-                window.scrollTo(0, 1);
-                updateFullscreenBtn();
-            }
-        } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen().catch(() => {});
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            }
-            if (arcadeWrapper) {
-                arcadeWrapper.classList.remove('is-fullscreen');
-            }
-            updateFullscreenBtn();
-        }
+        toggleFullscreen();
         btnFullscreen.blur();
+    });
+}
+
+if (btnFsFloat) {
+    btnFsFloat.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleFullscreen();
+        btnFsFloat.blur();
     });
 }
 
@@ -159,7 +227,7 @@ function triggerHaptic(duration = 15) {
 
 function unlockAudioOnFirstTouch() {
     window.soundFX.init();
-    if (window.soundFX.bgmEnabled && !window.soundFX.bgmPlaying && typeof game !== 'undefined' && game && game.state === 'PLAYING') {
+    if (window.soundFX.bgmEnabled && !window.soundFX.bgmPlaying && typeof game !== 'undefined' && game && game.started && game.state === 'PLAYING') {
         window.soundFX.startBGM();
     }
 }
@@ -1404,10 +1472,14 @@ class Player {
 // ============================================================================
 
 const LEVEL_INFO = {
-    1: { code: '1-1', name: 'THE GREAT SEWER', subtitle: 'SLUDGE CANALS & STINK PIPES', theme: 'sewer' },
-    2: { code: '1-2', name: 'TOXIC PIPEWORKS', subtitle: 'HIGH DUCTS & GRATE LIFTS', theme: 'pipeworks' },
-    3: { code: '1-3', name: 'SEPTIC LAGOON', subtitle: 'HIGH CATWALK BRIDGES', theme: 'lagoon' },
-    4: { code: '1-4', name: "POOPA'S CITADEL", subtitle: 'ROYAL PORCELAIN BOSS FORTRESS', theme: 'castle' }
+    1: { code: '1-1', name: 'THE GREAT SEWER', subtitle: 'SLUDGE CANALS & STINK PIPES', theme: 'sewer',
+         goal: 'Run through the sewer, stomp poop monsters and reach the Royal Flush Flagpole before time runs out!' },
+    2: { code: '1-2', name: 'TOXIC PIPEWORKS', subtitle: 'HIGH DUCTS & GRATE LIFTS', theme: 'pipeworks',
+         goal: 'Ride the moving grate lifts across the toxic ducts and reach the flagpole at the end!' },
+    3: { code: '1-3', name: 'SEPTIC LAGOON', subtitle: 'HIGH CATWALK BRIDGES', theme: 'lagoon',
+         goal: 'Hop across the high catwalk bridges - don\'t fall into the septic lagoon - and reach the flagpole!' },
+    4: { code: '1-4', name: "POOPA'S CITADEL", subtitle: 'ROYAL PORCELAIN BOSS FORTRESS', theme: 'castle',
+         goal: 'Dodge the firebars, defeat King Poopa (stomp or gas him) and flush him at the Royal Flagpole!' }
 };
 
 class Game {
@@ -1416,6 +1488,7 @@ class Game {
         this.coins = 0;
         this.worldTick = 0;
         this.currentLevel = 1;
+        this.started = false; // false while the level briefing splash is shown
         this.resetLevel(false);
     }
 
@@ -1423,7 +1496,9 @@ class Game {
         if (lvl < 1 || lvl > 4) return;
         this.currentLevel = lvl;
         this.updateLevelButtons();
+        this.started = false;
         this.resetLevel(false);
+        showStartScreen();
     }
 
     updateLevelButtons() {
@@ -1434,6 +1509,7 @@ class Game {
     }
 
     advanceAfterVictory() {
+        this.started = false; // Show the briefing for the next level
         if (this.currentLevel < 4) {
             this.currentLevel++;
             this.updateLevelButtons();
@@ -1446,6 +1522,7 @@ class Game {
             this.updateLevelButtons();
             this.resetLevel(false);
         }
+        showStartScreen();
     }
 
     resetLevel(preservePowerup = false) {
@@ -1484,7 +1561,7 @@ class Game {
 
         this.updateLevelButtons();
         window.soundFX.stopBGM();
-        if (window.soundFX.bgmEnabled && window.soundFX.ctx) {
+        if (this.started && window.soundFX.bgmEnabled && window.soundFX.ctx) {
             window.soundFX.startBGM();
         }
     }
@@ -2641,8 +2718,68 @@ class Game {
 const game = new Game();
 window.game = game;
 
+// ============================================================================
+// LEVEL BRIEFING SPLASH SCREEN (Fullscreen prompt + Level Goal)
+// ============================================================================
+const startScreen = document.getElementById('start-screen');
+const btnStartFullscreen = document.getElementById('btn-start-fullscreen');
+const btnStartPlay = document.getElementById('btn-start-play');
+const startIosHint = document.getElementById('start-ios-hint');
+
+function showStartScreen() {
+    if (!startScreen) {
+        game.started = true;
+        return;
+    }
+    const info = LEVEL_INFO[game.currentLevel] || LEVEL_INFO[1];
+    document.getElementById('start-level-code').textContent = 'WORLD ' + info.code;
+    document.getElementById('start-level-name').textContent = info.name;
+    document.getElementById('start-level-sub').textContent = info.subtitle;
+    document.getElementById('start-level-goal').textContent = info.goal;
+
+    // Already fullscreen? Then a plain PLAY button is all that's needed.
+    const fsActive = isFullscreenActive();
+    btnStartFullscreen.hidden = fsActive;
+    btnStartPlay.classList.toggle('start-btn-primary', fsActive);
+    if (startIosHint) {
+        startIosHint.hidden = fsActive || nativeFullscreenSupported ||
+            !/iPhone|iPod/i.test(navigator.userAgent || '');
+    }
+
+    keys.left = keys.right = keys.jump = keys.shoot = false;
+    keys.jumpPressed = keys.shootPressed = false;
+    startScreen.classList.add('visible');
+}
+
+function startGame(withFullscreen) {
+    // Must run synchronously inside the click/tap so the browser allows fullscreen
+    if (withFullscreen) enterFullscreen();
+    window.soundFX.init();
+    if (startScreen) startScreen.classList.remove('visible');
+    game.started = true;
+    game.introBannerTimer = 150;
+    if (window.soundFX.bgmEnabled && !window.soundFX.bgmPlaying) {
+        window.soundFX.startBGM();
+    }
+}
+
+if (btnStartFullscreen) {
+    btnStartFullscreen.addEventListener('click', (e) => {
+        e.stopPropagation();
+        startGame(true);
+    });
+}
+if (btnStartPlay) {
+    btnStartPlay.addEventListener('click', (e) => {
+        e.stopPropagation();
+        startGame(false);
+    });
+}
+
+showStartScreen();
+
 function gameLoop() {
-    game.update();
+    if (game.started) game.update();
     game.draw();
     requestAnimationFrame(gameLoop);
 }

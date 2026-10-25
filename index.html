@@ -53,6 +53,9 @@
         <div id="canvas-container" class="crt-effect">
             <canvas id="gameCanvas" width="800" height="480"></canvas>
 
+            <!-- Floating in-game fullscreen toggle (always reachable on mobile landscape) -->
+            <button id="btn-fs-float" class="fs-float-btn" title="Toggle Full Screen" aria-label="Toggle Full Screen">⛶</button>
+
             <!-- On-Screen Virtual Touch Gamepad for Mobile (Android & iOS) -->
             <div id="touch-controls" class="touch-controls-layer" aria-label="Touch Controls">
                 <div class="touch-group touch-dpad">
@@ -99,6 +102,33 @@
                 <span class="control-label">Restart</span>
             </div>
         </footer>
+
+        <!-- Pre-game Briefing / Splash Screen (Fullscreen prompt + Level Goal) -->
+        <div id="start-screen" class="start-overlay" role="dialog" aria-modal="true" aria-labelledby="start-title">
+            <div class="start-card">
+                <h2 id="start-title" class="start-title">💨 SUPER FARTIO BROS. 💩</h2>
+                <div class="start-level">
+                    <span id="start-level-code" class="start-level-code">WORLD 1-1</span>
+                    <span id="start-level-name" class="start-level-name">THE GREAT SEWER</span>
+                    <span id="start-level-sub" class="start-level-sub">SLUDGE CANALS &amp; STINK PIPES</span>
+                </div>
+                <div class="start-goal">
+                    <span class="start-goal-label">🎯 GOAL</span>
+                    <p id="start-level-goal">Reach the Royal Flush Flagpole at the end of the sewer before time runs out!</p>
+                </div>
+                <ul class="start-tips">
+                    <li><span class="tip-key">◀ ▶</span> Move</li>
+                    <li><span class="tip-key">💨</span> Fart Jump</li>
+                    <li><span class="tip-key">☣️</span> Gas / Sprint</li>
+                    <li><span class="tip-key">🥫</span> Beans = Super Gas</li>
+                </ul>
+                <div class="start-actions">
+                    <button id="btn-start-fullscreen" class="retro-btn start-btn start-btn-primary">⛶ PLAY FULLSCREEN</button>
+                    <button id="btn-start-play" class="retro-btn start-btn">▶ PLAY</button>
+                </div>
+                <p id="start-ios-hint" class="start-hint" hidden>iPhone tip: tap Share → <strong>Add to Home Screen</strong> for true fullscreen.</p>
+            </div>
+        </div>
     </div>
 
     <script src="audio.js"></script>
